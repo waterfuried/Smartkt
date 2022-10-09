@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>ru.geekbrains</groupId>
-	<artifactId>market-autumn</artifactId>
+	<artifactId>smartkt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>market-autumn</name>
+	<name>smartkt</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
