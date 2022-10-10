@@ -1,12 +1,31 @@
+<!-- 3. Сделать страницу, на которой отображаются все товары из репозитория. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>GeekMarket</title>
-</head>
-<body>
-    <h1>Student Page</h1>
-    <h3 th:text="${'ID: ' + studentFront.getId()}"/>
-    <h3 th:text="${'Name: ' + studentFront.getName()}"/>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Smartkt</title>
+        <!-- рамка таблицы и отступы внутри ее ячеек -->
+        <style>
+            table, th, td { border: 1px solid black; }
+            th, td { padding: 10px; }
+        </style>
+    </head>
+    <body>
+        <h1>[[${oneOrAll}]]</h1>
+        <!-- отобразить список товаров в виде таблицы -->
+        <table>
+            <thead><!--заголовок (шапка) таблицы-->
+                <tr>
+                    <th>Артикул</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tr th:each="p : ${productsList}">
+                <td>[[${p.id}]]</td>
+                <td>[[${p.title}]]</td>
+                <td>[[${p.cost}]]</td>
+            </tr>
+        </table>
+    </body>
 </html>
