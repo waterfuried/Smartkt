@@ -36,10 +36,10 @@ public class MainController {
     public String getProduct(@PathVariable Integer id, Model model) {
         String s = "Информация о товаре с id="+id;
         try {
-            service.getProduct(id);
+            Product p = service.getProduct(id);
             model.addAttribute("oneOrAll", s);
             model.addAttribute("productsList",
-                    new ArrayList<>(Collections.singletonList(service.getProduct(id))));
+                    new ArrayList<>(Collections.singletonList(p)));
             return "products.html";
         }
         catch (RuntimeException ex) {
@@ -49,12 +49,21 @@ public class MainController {
     }
 
     // ***. Сделать форму для добавления товара в репозиторий и логику работы этой формы;
-    // TODO: сделал частично - не понял, как введенные оператором данные о товаре
-    //  добавить в список доступных товаров (репозиторий)
     @GetMapping("/newProduct")
     public String addNewProduct(Model model) {
+        // созданный здесь объект Product будет передан страницей по адресу /AddProduct
         model.addAttribute("product", new Product());
         model.addAttribute("actionType", "добавить новый товар");
         return "new_product.html";
+    }
+
+    // добавлять товар нужно post- (!не get-) запросом
+    // аннотация @RequestBody для аргумента не нужна
+    @PostMapping("/AddProduct")
+    public String addProduct(Product product) {
+        service.addProduct(product);
+        // для вывода обновленного списка доступных товаров вместо вызова getAllProducts()
+        // нужно использовать перенаправление на отображающую список страницу
+        return "redirect:/products";
     }
 }
