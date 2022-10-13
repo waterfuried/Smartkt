@@ -6,12 +6,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
         <!--<style>
             table, th, td { border: 1px solid black; }
             th, td { padding: 10px; }
         </style>-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
         <script src="main.js"></script>
         <title>Товары</title>
     </head>
@@ -36,7 +36,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-primary" disabled="disabled" ng-click="addProduct(s.id)">Добавить товар</button>
+                <!-- TODO: переход на страницу добавления товара почему-то не выполняется -->
+                <button class="btn btn-primary" ng-href="new_product.html">Добавить товар</button>
             <!--</ng-template>
             <ng-template #empty>пуст</ng-template>-->
         </div>

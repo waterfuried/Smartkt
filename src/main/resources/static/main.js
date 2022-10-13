@@ -1,3 +1,4 @@
+// https://docs.angularjs.org/api - AngularJS API documentation
 angular.module('app', []).controller('mainController', function ($scope, $http) {
     const contextPath = 'http://localhost:8189/app';
 
