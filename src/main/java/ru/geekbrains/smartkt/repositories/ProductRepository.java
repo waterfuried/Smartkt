@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 
 import java.util.*;
 
-// 2. Товары необходимо хранить в репозитории (класс, в котором в виде List<Product> хранятся товары).
+// Товары необходимо хранить в репозитории (класс, в котором в виде List<Product> хранятся товары).
 @Repository
 public class ProductRepository {
     private final String[] PRODUCT_TYPE = { "Вода", "Хлеб", "Картофель", "Молоко", "Яйцо куриное",
@@ -35,17 +35,18 @@ public class ProductRepository {
     }
 
     // Репозиторий должен уметь выдавать список всех товаров и товар по id;
-    public Product findById(int id) {
-        return products.stream().filter(p -> p.getId() == id).findFirst()
+    public Product findById(int id) throws RuntimeException {
+        return products.stream().filter(p -> p.getId().equals(id)).findFirst()
                 .orElseThrow(() -> new RuntimeException("Товар не найден"));
     }
 
-    public List<Product> getProducts(){
-        return products;
-    }
+    public List<Product> getProducts() { return products; }
 
     public void add(Product product) {
         if (products.stream().filter(p -> p.getTitle().equals(product.getTitle()))
                 .findFirst().orElse(null) == null) products.add(product);
     }
+
+    // 3) * Реализовать метод DELETE
+    public void delete(Integer id) throws RuntimeException { products.remove(findById(id)); }
 }

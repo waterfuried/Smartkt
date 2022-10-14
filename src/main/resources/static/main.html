@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <!--<style>
+            table, th, td { border: 1px solid black; }
+            th, td { padding: 10px; }
+        </style>-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="main.js"></script>
+        <title>Товары</title>
+    </head>
+    <body>
+        <div class="container" ng-controller="mainController">
+            <!--TODO: блок if-else в Angular не сработал, как описано в документации-->
+            <h3><!--*ng-if="productsList.length; then #fillTable else #empty"-->Список доступных товаров</h3>
+            <!--<ng-template #fillTable>-->
+                <table class="table table-hover">
+                    <thead>
+                        <td><b>Артикул</b></td>
+                        <td><b>Название</b></td>
+                        <td><b>Цена</b></td>
+                        <td></td>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="s in productsList">
+                            <td>{{s.id}}</td>
+                            <td>{{s.title}}</td>
+                            <td>{{s.cost}}</td>
+                            <td><button class="btn btn-danger" ng-click="delProduct(s.id)">Удалить</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- TODO: переход на страницу добавления товара почему-то не выполняется -->
+                <button class="btn btn-primary" ng-href="new_product.html">Добавить товар</button>
+            <!--</ng-template>
+            <ng-template #empty>пуст</ng-template>-->
+        </div>
+    </body>
+</html>

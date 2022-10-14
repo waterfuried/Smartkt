@@ -19,4 +19,7 @@ public class ProductService {
     public List<Product> getAllProducts() { return repository.getProducts(); }
 
     public void addProduct(Product product) { repository.add(product); }
+
+    // 3) * Реализовать метод DELETE
+    public void deleteProduct(Integer id) { repository.delete(id); }
 }
