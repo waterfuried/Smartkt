@@ -47,6 +47,5 @@ public class ProductRepository {
                 .findFirst().orElse(null) == null) products.add(product);
     }
 
-    // 3) * Реализовать метод DELETE
     public void delete(Integer id) throws RuntimeException { products.remove(findById(id)); }
 }

@@ -10,7 +10,7 @@ import lombok.*;
 
 import java.util.*;
 
-// 2) Переделать под новую логику фронта с клиентов на продукты
+// TODO: Переделать под новую логику фронта с клиентов на продукты
 @RestController // делает ненужными аннотации @ResponseBody
 @RequiredArgsConstructor
 public class MainController {
@@ -74,8 +74,7 @@ public class MainController {
         service.addProduct(new Product(id, title, cost));
     }
 
-    // 3) * Реализовать метод DELETE
-    // логичнее выполнять его по аннотации @DeleteMapping, но как реализовать это в Angular не ясно
+    // метод DELETE логичнее выполнять по аннотации @DeleteMapping, но как реализовать это в Angular не ясно
     @GetMapping("/products/delete/{id}")
     public void delProduct(@PathVariable Integer id) { service.deleteProduct(id); }
 }

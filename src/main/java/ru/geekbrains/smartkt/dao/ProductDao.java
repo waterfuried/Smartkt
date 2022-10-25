@@ -6,12 +6,8 @@ import org.hibernate.Session;
 
 import java.util.*;
 
-// 2. Создайте класс ProductDao и реализуйте в нем логику выполнения CRUD-операций над сущностью Product
-//    (Product findById(Long id),
-//    List<Product> findAll(),
-//    void deleteById(Long id),
-//    Product saveOrUpdate(Product product));
-public class ProductDao implements ProductDaocism {
+// класс реализует логику выполнения CRUD-операций над сущностью Product
+public class ProductDao implements Daocism<Product> {
     private final SessionFactoryUtils sessionFactoryUtils;
 
     public ProductDao(SessionFactoryUtils sessionFactoryUtils) {
@@ -76,12 +72,13 @@ public class ProductDao implements ProductDaocism {
         }
     }
 
-    // вместо задания №3 (перед запуском SpringBoot-приложения)
+    // перед запуском SpringBoot-приложения
     // метод выполнит проверку реализованных методов работы с БД
     public void test() {
         Product p;
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
+            // TODO: p всегда null после замены интерфейса на параметризованный
             p = session.get(Product.class, 4);
             System.out.println("product with id = 4: "+p);
             session.getTransaction().commit();

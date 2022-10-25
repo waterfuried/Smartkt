@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 import lombok.*;
 
-// 1. Создайте сущность Product (Long id, String title, int price)
 @Entity
 @Table(name = "products")
 @Data
@@ -28,8 +27,15 @@ public class Product {
     @Column(name = "cost")
     private Integer cost;
 
+    @ManyToOne // связь с таблицей заказов (многие-к-одному, продукты-в-заказе)
+    @JoinColumn(name="order_id")
+    private Order order;
+
     @Override
     public String toString() {
-        return "Product {" + "id="+id+" title='" +title+'\''+" cost="+cost +'}';
+        return "Product:"+
+		"\n\tid="+id+
+		"\n\ttitle='" +title+'\''+
+		"\n\tcost="+cost;
     }
 }

@@ -14,5 +14,7 @@
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <mapping class="ru.geekbrains.smartkt.dao.Product"/>
+        <mapping class="ru.geekbrains.smartkt.dao.Order"/>
+        <mapping class="ru.geekbrains.smartkt.dao.Customer"/>
     </session-factory>
 </hibernate-configuration>
