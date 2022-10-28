@@ -28,7 +28,7 @@ public class Product {
     private Integer cost;
 
     @ManyToOne // связь с таблицей заказов (многие-к-одному, продукты-в-заказе)
-    @JoinColumn(name="order_id")
+    //@JoinColumn(name="order_id")
     private Order order;
 
     @Override

@@ -12,7 +12,10 @@ DROP TABLE orders IF EXISTS;
 
 CREATE TABLE IF NOT EXISTS products (id bigserial, title VARCHAR(255), cost int, PRIMARY KEY (id));
 CREATE TABLE IF NOT EXISTS customers (id bigserial, name VARCHAR(255), PRIMARY KEY (id));
-CREATE TABLE IF NOT EXISTS orders (id bigserial, product int, customer int, PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS orders (id bigserial, product int, customer int, date_time timestamp, PRIMARY KEY (id));
+
+--ALTER TABLE orders
+--    ADD CONSTRAINT ordersFK0 FOREIGN KEY (customer) REFERENCES customers
 
 -- TODO: список товаров должен быть случайным, но нужно разбираться в используемом диалекте SQL
 --DECLARE cnt, rnd AS int

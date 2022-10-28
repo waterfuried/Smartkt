@@ -5,7 +5,6 @@ import javax.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.*;
 
 // класс заказа (покупатель делает заказ продуктов):
 // - номер заказа
@@ -20,16 +19,18 @@ import java.util.*;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "id")
     private Integer id;
 
-    @OneToMany(mappedBy="order") // связь с таблицей продуктов (один-ко-многим, заказ-продукты)
-    @Column(name = "product")
-    private List<Product> products;
+    @ManyToOne // связь с таблицей продуктов (один-ко-многим, заказ-продукты)
+    //такое имя для этого поля будет использоваться Hibernate по умолчанию
+    //если нужно другое, его следует указать явно
+    //@JoinColumn(name = "product_id")
+    private Product product;
 
-    @OneToMany(mappedBy="id") // связь с таблицей покупателей (один-ко-многим, заказ-покупатели)
-    @Column(name = "customer")
-    private List<Customer> customer;
+    @ManyToOne // связь с таблицей покупателей (многие-к-одному, покупатели-заказ)
+    //@JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @Column(name = "date_time")
     private Timestamp date_time;
@@ -39,7 +40,7 @@ public class Order {
         return "Order:"+
 		"\n\tid="+id+
 		"\n\tcustomer="+customer+
-		"\n\tproducts="+products+
+		"\n\tproduct="+product+
 		"\n\ttimestamp="+date_time;
     }
 }

@@ -21,8 +21,9 @@ public class Customer {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne // связь с таблицей заказов (многие-к-одному, заказы-покупателя)
-    @JoinColumn(name="order_id")
+    @OneToMany(mappedBy= "id") // связь с таблицей заказов (один-к-многим, покупатель-заказы)
+    //для явного указания поля связывания в другой таблице, его нужно указать в JoinColumn-аннотации
+    //@JoinColumn(name="order_id")
     private List<Order> orders;
 
     @Override
