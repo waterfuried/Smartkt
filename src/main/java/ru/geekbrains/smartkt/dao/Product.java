@@ -13,8 +13,7 @@ import lombok.*;
 @Entity
 @Table(name = "products")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,12 @@ public class Product {
     @ManyToOne // связь с таблицей заказов (многие-к-одному, продукты-в-заказе)
     //@JoinColumn(name="order_id")
     private Order order;
+
+    public Product(Integer id, String title, Integer cost) {
+        this.id = id;
+        this.title = title;
+        this.cost = cost;
+    }
 
     @Override
     public String toString() {

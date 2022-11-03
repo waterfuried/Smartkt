@@ -5,6 +5,7 @@
 --    - и товарах (id, название, стоимость) -- см. п.1
 --
 -- Hibernate docs -- https://hibernate.org/orm/documentation/5.4/
+-- H2 Databases -- http://h2database.com/html/main.html
 --
 DROP TABLE products IF EXISTS;
 DROP TABLE customers IF EXISTS;

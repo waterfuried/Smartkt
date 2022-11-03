@@ -1,6 +1,6 @@
 package ru.geekbrains.smartkt.services;
 
-import ru.geekbrains.smartkt.dto.Product;
+import ru.geekbrains.smartkt.dao.Product;
 import ru.geekbrains.smartkt.repositories.ProductRepository;
 
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import java.util.*;
 public class ProductService {
     private final ProductRepository repository;
 
-    public Product getProduct(int id) { return repository.findById(id); }
+    public Product getProduct(int id) { return repository.findById(id).orElse(null); }
 
-    public List<Product> getAllProducts() { return repository.getProducts(); }
+    public List<Product> getAllProducts() { return repository.findAll()/*getProducts()*/; }
 
-    public void addProduct(Product product) { repository.add(product); }
+    public void addProduct(Product product) { repository./*add*/save(product); }
 
-    public void deleteProduct(Integer id) { repository.delete(id); }
+    public void deleteProduct(Integer id) { repository./*delete*/deleteById(id); }
 }

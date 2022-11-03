@@ -2,3 +2,22 @@ server:
   port: 8189
   servlet:
     context-path: /app
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL #;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+  # учитывая наличие sql-скриптов, нужно отключать автоматическое создание
+  # Hibernate схемы БД, однако это не возымело никакого эффекта
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  # разрешить использование h2-консоли
+  h2:
+    console:
+      enabled: true
+      path: /h2
