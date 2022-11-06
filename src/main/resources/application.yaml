@@ -5,8 +5,8 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL #;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver #org.sqlite.JDBC
+    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL #;DB_CLOSE_DELAY=-1 // jdbc:sqlite:eshop.db
     username: sa
     password:
 
@@ -15,6 +15,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+    #dialect: ru.geekbrains.smartkt.sqlite.SQLiteDialect
     show-sql: true
   # разрешить использование h2-консоли
   h2:

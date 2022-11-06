@@ -11,9 +11,14 @@ DROP TABLE products IF EXISTS;
 DROP TABLE customers IF EXISTS;
 DROP TABLE orders IF EXISTS;
 
-CREATE TABLE IF NOT EXISTS products (id bigserial, title VARCHAR(255), cost int, PRIMARY KEY (id));
-CREATE TABLE IF NOT EXISTS customers (id bigserial, name VARCHAR(255), PRIMARY KEY (id));
-CREATE TABLE IF NOT EXISTS orders (id bigserial, product int, customer int, date_time timestamp, PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS products (id bigserial PRIMARY KEY, title VARCHAR(255), cost int);
+CREATE TABLE IF NOT EXISTS customers (id bigserial PRIMARY KEY, name VARCHAR(255));
+CREATE TABLE IF NOT EXISTS orders (
+    id bigserial PRIMARY KEY,
+    product_id int, customer_id int,
+    date_time timestamp, paid timestamp,
+    FOREIGN KEY (product_id) REFERENCES products (id),
+    FOREIGN KEY (customer_id) REFERENCES customers (id));
 
 --ALTER TABLE orders
 --    ADD CONSTRAINT ordersFK0 FOREIGN KEY (customer) REFERENCES customers

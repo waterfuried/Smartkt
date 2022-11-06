@@ -10,6 +10,8 @@ import javax.persistence.*;
 
 import lombok.*;
 
+import java.util.*;
+
 @Entity
 @Table(name = "products")
 @Data
@@ -26,9 +28,10 @@ public class Product {
     @Column(name = "cost")
     private Integer cost;
 
-    @ManyToOne // связь с таблицей заказов (многие-к-одному, продукты-в-заказе)
-    //@JoinColumn(name="order_id")
-    private Order order;
+    // связь с таблицей заказов (один-ко-многим, продукт-в-заказах) устанавливается
+    // с классом сущности по его полю, а не с соответствующей ему таблицей БД по столбцу
+    @OneToMany(mappedBy = "product")
+    private List<Order> orders;
 
     public Product(Integer id, String title, Integer cost) {
         this.id = id;

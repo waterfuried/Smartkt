@@ -28,6 +28,8 @@ public class ProductDao implements Daocism<Product> {
     public List<Product> findAll() {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
+            // TODO: после замены интерфейса на параметризованный список возвращается пустым
+            @SuppressWarnings("unchecked")
             List<Product> pl = session.createQuery("select p from Product p").getResultList();
             session.getTransaction().commit();
             return pl;
