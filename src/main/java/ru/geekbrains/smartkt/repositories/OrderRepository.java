@@ -1,29 +1,35 @@
 package ru.geekbrains.smartkt.repositories;
 
-import ru.geekbrains.smartkt.dao.Order;
+import ru.geekbrains.smartkt.dao.CustomOrder;
 
 import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 
 import java.util.*;
+import java.util.stream.*;
 
 @Repository
 public class OrderRepository {
-    private List<Order> orders;
+    private List<CustomOrder> orders;
 
     @PostConstruct
     public void init() { orders = new ArrayList<>(); }
 
-    public Order find(int id) throws RuntimeException {
+    public CustomOrder find(int id) throws RuntimeException {
         return orders.stream().filter(p -> p.getId().equals(id)).findFirst()
                 .orElseThrow(() -> new RuntimeException("Заказ не найден"));
     }
 
-    public List<Order> getOrders() { return orders; }
+    public List<CustomOrder> getOrders() { return orders; }
 
-    public void add(Order order) {
-        if (orders.stream().filter(p -> p.getId().equals(order.getId()))
-                .findFirst().orElse(null) == null) orders.add(order);
+    public List<CustomOrder> findAllOrdersByCustomer(Integer customerId) {
+        return orders.stream().filter(p -> p.getCustomer().getId().equals(customerId))
+                .collect(Collectors.toList());
+    }
+
+    public void add(CustomOrder customOrder) {
+        if (orders.stream().filter(p -> p.getId().equals(customOrder.getId()))
+                .findFirst().orElse(null) == null) orders.add(customOrder);
     }
 
     public void delete(Integer id) throws RuntimeException { orders.remove(find(id)); }

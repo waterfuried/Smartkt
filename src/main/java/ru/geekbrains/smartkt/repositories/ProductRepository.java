@@ -16,7 +16,7 @@ public /*class*/ interface ProductRepository extends JpaRepository<Product, Inte
     private final int[] PRODUCT_PRICE = { 20, 25, 30, 50, 55,
             200, 35, 70, 100, 40 };
 
-    //private List<Product> products;
+    private List<Product> products;
 
     @PostConstruct
     public void init() {
@@ -52,7 +52,7 @@ public /*class*/ interface ProductRepository extends JpaRepository<Product, Inte
     */
 
     /*
-        3. * К запросу всех товаров добавьте возможность фильтрации по минимальной и максимальной цене,
+        К запросу всех товаров добавьте возможность фильтрации по минимальной и максимальной цене,
              в трех вариантах:
                 товары дороже min цены,
                 товары дешевле max цены,
@@ -66,4 +66,6 @@ public /*class*/ interface ProductRepository extends JpaRepository<Product, Inte
 
     @Query("select p from Product p where p.cost > :min and p.cost < :max")
     List<Product> findAllByCostBetween(Integer min, Integer max);
+
+    //boolean productExists(String title);
 }

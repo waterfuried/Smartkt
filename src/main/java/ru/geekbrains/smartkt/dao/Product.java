@@ -30,20 +30,20 @@ public class Product {
 
     // связь с таблицей заказов (один-ко-многим, продукт-в-заказах) устанавливается
     // с классом сущности по его полю, а не с соответствующей ему таблицей БД по столбцу
+    // при наличии связанных полей в других сущностях каскадные операции (например, удаление)
+    // удалят как объект сущности, так и записи в соответствующих сущностям таблицах
+    // для этого в аннотации нужно указать (через запятую) cascade = CascadeType.REMOVE
     @OneToMany(mappedBy = "product")
-    private List<Order> orders;
+    private List<CustomOrder> orders;
 
-    public Product(Integer id, String title, Integer cost) {
+    /*public Product(Integer id, String title, Integer cost) {
         this.id = id;
         this.title = title;
         this.cost = cost;
-    }
+    }*/
 
     @Override
     public String toString() {
-        return "Product:"+
-		"\n\tid="+id+
-		"\n\ttitle='" +title+'\''+
-		"\n\tcost="+cost;
+        return "Product (id= "+id+", title='" +title+"', cost="+cost+")";
     }
 }

@@ -28,15 +28,13 @@ public class ProductDao implements Daocism<Product> {
     public List<Product> findAll() {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
-            // TODO: после замены интерфейса на параметризованный список возвращается пустым
-            @SuppressWarnings("unchecked")
-            List<Product> pl = session.createQuery("select p from Product p").getResultList();
+            List<Product> pl = session.createQuery("select p from Product p", Product.class)
+                    .getResultList();
             session.getTransaction().commit();
             return pl;
         }
     }
 
-    @Override
     public Product findByTitle(String title) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
@@ -70,17 +68,20 @@ public class ProductDao implements Daocism<Product> {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
             session.delete(session.get(Product.class, id));
+            //удаление запросом к БД происходит быстрее,
+            //чем пометка объекта на удаление и его выполнение
+            //session.createQuery("delete from Product p where p.id = :id")
+            //        .setParameter("id", id)
+            //        .executeUpdate();
             session.getTransaction().commit();
         }
     }
 
-    // перед запуском SpringBoot-приложения
-    // метод выполнит проверку реализованных методов работы с БД
+    // проверка реализованных методов работы с БД
     public void test() {
         Product p;
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            // TODO: p всегда null после замены интерфейса на параметризованный
             p = session.get(Product.class, 4);
             System.out.println("product with id = 4: "+p);
             session.getTransaction().commit();

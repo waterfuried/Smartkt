@@ -6,17 +6,34 @@ server:
 spring:
   datasource:
     driver-class-name: org.h2.Driver #org.sqlite.JDBC
-    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL #;DB_CLOSE_DELAY=-1 // jdbc:sqlite:eshop.db
+    # чтение sql-скриптов происходит из файла с одним из 3 имен: data.sql, import.sql, schema.sql,
+    # при этом schema.sql/data.sql содержат только
+    #  - schema.sql - определение структуры БД,
+    #  - data.sql - сценарий заполнения ее таблиц данными
+    # чтение также возможно из файлов с именами вида schema-${platform}.sql или data-${platform}.sql,
+    # где platform есть значение свойства spring.sql.init.platform,
+    # оно, например, может представлять собой имя поставщика БД/СУБД -- oracle, mysql, postgresql
+    #
+    # при другом имени файла его нужно указывать явно, в свойстве url или import-files (см. ниже, JPA),
+    # но нужно учитывать, что из 3 указанных файлов данные считываются при инициализации Spring Boot,
+    # а из указанного пользовательского sql-файла - после
+    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL #;INIT=runscript from 'src/main/resources/createDB.sql' #;DB_CLOSE_DELAY=-1 // jdbc:sqlite:eshop.db
     username: sa
     password:
 
-  # учитывая наличие sql-скриптов, нужно отключать автоматическое создание
-  # Hibernate схемы БД, однако это не возымело никакого эффекта
+  # настройки, прописываемые в xml-файле конфигурации, можно указывать и здесь,
+  # но использовать стоит что-то одно -- или .xml, или .yml
+  # поскольку проект нарастал с выполнением разных задач (по мере углубления в Spring Boot),
+  # некоторое время оба файла использовались совместно
   jpa:
-    hibernate:
-      ddl-auto: none
-    #dialect: ru.geekbrains.smartkt.sqlite.SQLiteDialect
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect #ru.geekbrains.smartkt.sqlite.SQLiteDialect
+        #hbm2ddl:
+          #import_files: createDB.sql
+      # учитывая наличие sql-скриптов, рекомендуется отключать автоматическое создание Hibernate схемы БД
+        #ddl-auto: none # тоже субключ для hbm2ddl
   # разрешить использование h2-консоли
   h2:
     console:
