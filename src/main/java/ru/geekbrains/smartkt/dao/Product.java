@@ -10,12 +10,12 @@ import javax.persistence.*;
 
 import lombok.*;
 
-// 1. Создайте сущность Product (Long id, String title, int price)
+import java.util.*;
+
 @Entity
 @Table(name = "products")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,22 @@ public class Product {
     @Column(name = "cost")
     private Integer cost;
 
+    // связь с таблицей заказов (один-ко-многим, продукт-в-заказах) устанавливается
+    // с классом сущности по его полю, а не с соответствующей ему таблицей БД по столбцу
+    // при наличии связанных полей в других сущностях каскадные операции (например, удаление)
+    // удалят как объект сущности, так и записи в соответствующих сущностям таблицах
+    // для этого в аннотации нужно указать (через запятую) cascade = CascadeType.REMOVE
+    @OneToMany(mappedBy = "product")
+    private List<CustomOrder> orders;
+
+    /*public Product(Integer id, String title, Integer cost) {
+        this.id = id;
+        this.title = title;
+        this.cost = cost;
+    }*/
+
     @Override
     public String toString() {
-        return "Product {" + "id="+id+" title='" +title+'\''+" cost="+cost +'}';
+        return "Product (id= "+id+", title='" +title+"', cost="+cost+")";
     }
 }

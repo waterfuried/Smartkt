@@ -6,12 +6,8 @@ import org.hibernate.Session;
 
 import java.util.*;
 
-// 2. Создайте класс ProductDao и реализуйте в нем логику выполнения CRUD-операций над сущностью Product
-//    (Product findById(Long id),
-//    List<Product> findAll(),
-//    void deleteById(Long id),
-//    Product saveOrUpdate(Product product));
-public class ProductDao implements ProductDaocism {
+// класс реализует логику выполнения CRUD-операций над сущностью Product
+public class ProductDao implements Daocism<Product> {
     private final SessionFactoryUtils sessionFactoryUtils;
 
     public ProductDao(SessionFactoryUtils sessionFactoryUtils) {
@@ -32,13 +28,13 @@ public class ProductDao implements ProductDaocism {
     public List<Product> findAll() {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
-            List<Product> pl = session.createQuery("select p from Product p").getResultList();
+            List<Product> pl = session.createQuery("select p from Product p", Product.class)
+                    .getResultList();
             session.getTransaction().commit();
             return pl;
         }
     }
 
-    @Override
     public Product findByTitle(String title) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
@@ -72,12 +68,16 @@ public class ProductDao implements ProductDaocism {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
             session.delete(session.get(Product.class, id));
+            //удаление запросом к БД происходит быстрее,
+            //чем пометка объекта на удаление и его выполнение
+            //session.createQuery("delete from Product p where p.id = :id")
+            //        .setParameter("id", id)
+            //        .executeUpdate();
             session.getTransaction().commit();
         }
     }
 
-    // вместо задания №3 (перед запуском SpringBoot-приложения)
-    // метод выполнит проверку реализованных методов работы с БД
+    // проверка реализованных методов работы с БД
     public void test() {
         Product p;
         try (Session session = sessionFactoryUtils.getSession()) {
