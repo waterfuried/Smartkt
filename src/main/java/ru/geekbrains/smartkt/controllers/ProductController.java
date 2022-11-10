@@ -5,15 +5,20 @@ import ru.geekbrains.smartkt.services.ProductService;
 
 import org.springframework.web.bind.annotation.*;
 
+import lombok.*;
+
 import java.util.*;
 
 // Сделать RestController позволяющий выполнять набор операций над сущностью
+// Реализуйте REST контроллер для работы с сущностью Product
 // TODO: Переделать под новую логику фронта (Thymeleaf -> AngularJS)
+@RequiredArgsConstructor
 @RestController
 public class ProductController {
     private final ProductService service;
 
-    public ProductController(ProductService service) { this.service = service; }
+    //или без использования Ломбок можно оставить этот конструктор
+    //public ProductController(ProductService service) { this.service = service; }
 
     // получение товара по id [ GET .../app/products/{id} ]
     // отдельно отобразить товар с указанным id
@@ -69,7 +74,7 @@ public class ProductController {
 
     // удаление товара по id [ GET .../app/products/delete/{id} ]
     // метод DELETE логичнее выполнять по аннотации @DeleteMapping, но как реализовать это в Angular не ясно
-    @GetMapping("/products/delete/{id}")
+    @DeleteMapping("/products/delete/{id}")
     public /*String*/void delProduct(@PathVariable Integer id) {
         service.deleteProduct(id);
         //return "redirect:/products";
