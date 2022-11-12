@@ -65,6 +65,10 @@ public /*class*/ interface ProductRepository extends JpaRepository<Product, Inte
     List<Product> findAllWithCostLessThan(Integer max);
 
     @Query("select p from Product p where p.cost > :min and p.cost < :max")
+    // можно использовать один метод (с необязательными аргументами) вместо трех,
+    // но нужно определиться, как задавать значения аргументов по умолчанию -
+    // как некие глобальные константы (в отдельном модуле/классе), или как
+    // локальные константы метода
     List<Product> findAllByCostBetween(Integer min, Integer max);
 
     //boolean productExists(String title);

@@ -10,9 +10,7 @@ angular.module('app', []).controller('mainController', function ($scope, $http) 
     };
 
     $scope.delProduct = function (id) {
-        // вместо get можно использовать метод delete, принимающий адрес, но без параметров (id),
-        // передать id как-то можно вторым аргументом delete, но так удаление не срабатывает
-        $http.get(contextPath+'/products/delete/'+id)
+        $http.delete(contextPath+'/products/delete/'+id)
             .then(function (response){
                 $scope.getAllProducts();
             });
