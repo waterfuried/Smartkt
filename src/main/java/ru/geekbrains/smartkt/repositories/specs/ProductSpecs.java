@@ -17,6 +17,11 @@ public class ProductSpecs {
 
     public static Specification<Product> textLike(String field, String textPart) {
         return (root, criteriaQuery, criteriaBuilder) ->
+                criteriaBuilder.like(root.get(field), String.format("%%%s%%", textPart));
+    }
+
+    public static Specification<Product> textLikeIgnoreCase(String field, String textPart) {
+        return (root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get(field)),
                                 String.format("%%%s%%", textPart).toLowerCase());
     }

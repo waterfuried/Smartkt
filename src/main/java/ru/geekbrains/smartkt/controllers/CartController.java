@@ -33,10 +33,4 @@ public class CartController {
     // удаление из корзины
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) { cart.delete(id); }
-
-    //@GetMapping
-    // но его наличие должно проверяться в списке уже добавленных товаров,
-    // и в случае его присутствия кол-во единиц товара должно увеличиться
-    // (используя поле quantity в OrderedProduct)
-    //public List<OrderedProductDTO> showCart() { return new ArrayList<>(); }
 }

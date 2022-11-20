@@ -17,7 +17,8 @@ import java.util.*;
 @Entity
 @Table(name = "products")
 @Data
-@RequiredArgsConstructor // создает набор конструкторов с 1 параметром для каждого из полей
+// создать набор конструкторов с 1 параметром для каждого из полей, а также конструктор без параметров
+@RequiredArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

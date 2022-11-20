@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderedProductDTO {
-    public Integer id,
+    private Integer id,
                    //orderId,
                    productId,
                    quantity;

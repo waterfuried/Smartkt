@@ -56,7 +56,7 @@ public class ProductService {
         //@GetMapping("/prev")
         //public List<Product> getPrevPage() {
         //return service.findAllProductsByPrevPage();
-        if (title != null && title.trim().length() > 0) spec = spec.and(textLike("title", title));
+        if (title != null && title.trim().length() > 0) spec = spec.and(textLikeIgnoreCase("title", title));
         if (minCost != null) spec = spec.and(intGreaterThanOrEqualTo("cost", minCost));
         if (maxCost != null) spec = spec.and(intLessThanOrEqualTo("cost", maxCost));
 
