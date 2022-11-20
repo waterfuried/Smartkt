@@ -6,6 +6,8 @@
 */
 package ru.geekbrains.smartkt.dao;
 
+import ru.geekbrains.smartkt.dto.ProductDTO;
+
 import javax.persistence.*;
 
 import lombok.*;
@@ -15,7 +17,7 @@ import java.util.*;
 @Entity
 @Table(name = "products")
 @Data
-@RequiredArgsConstructor
+@RequiredArgsConstructor // создает набор конструкторов с 1 параметром для каждого из полей
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +38,17 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CustomOrder> orders;
 
-    /*public Product(Integer id, String title, Integer cost) {
+    public Product(Integer id, String title, Integer cost) {
         this.id = id;
         this.title = title;
         this.cost = cost;
-    }*/
+    }
+
+    public Product(ProductDTO product) {
+        id = product.getId();
+        title = product.getTitle();
+        cost = product.getCost();
+    }
 
     @Override
     public String toString() {

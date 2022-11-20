@@ -7,10 +7,10 @@ import org.hibernate.Session;
 import java.util.*;
 
 // класс реализует логику выполнения CRUD-операций над сущностью Product
-public class ProductDao implements Daocism<Product> {
+public class ProductImpl implements Daocism<Product> {
     private final SessionFactoryUtils sessionFactoryUtils;
 
-    public ProductDao(SessionFactoryUtils sessionFactoryUtils) {
+    public ProductImpl(SessionFactoryUtils sessionFactoryUtils) {
         this.sessionFactoryUtils = sessionFactoryUtils;
     }
 
@@ -28,7 +28,8 @@ public class ProductDao implements Daocism<Product> {
     public List<Product> findAll() {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
-            List<Product> pl = session.createQuery("select p from Product p", Product.class)
+            List<Product> pl = session.createQuery("select p from Product p",
+                            Product.class)
                     .getResultList();
             session.getTransaction().commit();
             return pl;
@@ -38,7 +39,8 @@ public class ProductDao implements Daocism<Product> {
     public Product findByTitle(String title) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            Product p = session.createQuery("select p from Product p where p.title = :title", Product.class)
+            Product p = session.createQuery("select p from Product p where p.title = :title",
+                            Product.class)
                     .setParameter("title", title)
                     .getSingleResult();
             session.getTransaction().commit();
