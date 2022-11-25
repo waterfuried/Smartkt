@@ -42,7 +42,9 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Hibernate DB dependencies -->
+		<!-- Hibernate DB dependencies,
+			 более свежие версии несут в себе тотальную перестройку библиотек,
+			 поэтому их использование отложено -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -58,6 +60,13 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
+		<!-- отдельная зависимость от SLF4J при наличии интегрированного Lombok
+		     не нужна, поскольку последний несет ее в себе
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		-->
 	</dependencies>
 
 	<build>

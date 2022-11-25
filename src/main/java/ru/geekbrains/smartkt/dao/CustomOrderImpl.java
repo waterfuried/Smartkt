@@ -6,10 +6,10 @@ import org.hibernate.Session;
 
 import java.util.*;
 
-public class OrderDao implements Daocism<CustomOrder> {
+public class CustomOrderImpl implements Daocism<CustomOrder> {
     private final SessionFactoryUtils sessionFactoryUtils;
 
-    public OrderDao(SessionFactoryUtils sessionFactoryUtils) {
+    public CustomOrderImpl(SessionFactoryUtils sessionFactoryUtils) {
         this.sessionFactoryUtils = sessionFactoryUtils;
     }
 
