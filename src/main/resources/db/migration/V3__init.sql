@@ -75,7 +75,7 @@ INSERT INTO customers (username, password, email) VALUES
 
 insert into ur_links (user_id, role_id) values
     (1, 1), (2, 2), (3, 4), -- admins & managers
-    (1, 5), (2, 5), (3, 5), (4, 5); -- customers
+    (4, 5), (5, 5), (6, 5), (7, 5); -- customers
 
 INSERT INTO orders (product_id, customer_id, date_time, paid) VALUES
 (1, 1, '2022-11-06 13:00:00', NULL),

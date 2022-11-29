@@ -29,7 +29,7 @@ public class UserDTO {
         List<Role> roles = c.getRoles();
         StringBuilder sb = new StringBuilder();
         roles.forEach(role -> sb.append(role.getType()).append(", "));
-        dto.setRoles(sb.substring(0, sb.length()-2));
+        if (sb.length() > 0) dto.setRoles(sb.substring(0, sb.length()-2));
     }
 
     public void validate() {
