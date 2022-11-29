@@ -1,0 +1,60 @@
+<!-- 10.2. Создать страницу со списком всех пользователей, к которой имеют доступ только админы. -->
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Пользователи</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="icon" href="data:,"> <!-- отменить используемый по умолчанию поиск favicon.ico -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+        <script src="script/session.js"></script>
+    </head>
+    <body>
+        <div ng-controller="sessionController" ng-show="isUserLoggedIn()">
+            <h3>Пользователи</h3>
+            <table class="table table-hover">
+                <thead>
+                    <td><b>Id</b></td>
+                    <td><b>Имя</b></td>
+                    <td><b>Права</b></td>
+                    <td><b>e-mail</b></td>
+                    <td></td>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="u in usersList"><!--usersPage.content-->
+                        <td>{{u.id}}</td>
+                        <td>{{u.name}}</td>
+                        <td>{{u.email}}</td>
+                        <td>{{u.roles}}</td>
+                        <td><button class="btn btn-success btn-sm" ng-click="delUser(s.id)">Удалить</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <!-- добавление пользователя -->
+                <form novalidate ng-submit="addUser()">
+                    <p><b>Новый пользователь</b></p>
+                    <div>
+                        <label for="userName">Имя</label>
+                        <input type="text" class="form-control" id="userName" ng-model="newUser.name">
+                    </div><br>
+                    <div>
+                        <label for="userEmail">Эл. почта</label>
+                        <input type="text" class="form-control" id="userEmail" ng-model="newUser.email">
+                    </div><br>
+                    <div>
+                        <label for="userRoles">Права</label>
+                        <input type="text" class="form-control" id="userRoles" ng-model="newUser.roles">
+                    </div><br>
+                    <button class="btn btn-primary btn-sm" type="submit">Добавить</button>
+                    <p></p>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

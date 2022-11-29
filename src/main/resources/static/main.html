@@ -2,140 +2,134 @@
 <html ng-app="app"> <!-- псевдоним используемого модуля на AngularJS -->
     <head>
         <meta charset="utf-8">
+        <title>Товары</title>
 
         <!-- на getbootstrap.com можно найти готовые образцы оформления разных форм, кнопок, стилей и т.п -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
         <link rel="icon" href="data:,"> <!-- отменить используемый по умолчанию поиск favicon.ico -->
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <style>
-            /* table, th, td { border: 1px solid black; }
-            th, td { padding: 10px; }*/
-            .group_flt_new_crt {
-                display: flex;
-                justify-content: space-between;
-            }
-            .group_flt_new_crt_member {
-                width: 100%;
-                padding: 10px 10px;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-            }
-        </style>
-
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
-        <script src="main.js"></script>
-        <title>Товары</title>
+        <script src="script/main.js"></script>
+        <script src="script/session.js"></script>
     </head>
     <body>
         <!-- псевдоним используемого контроллера (исполнителя логики UI) на AngularJS -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" ng-controller="sessionController">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item" ng-show="!isUserLoggedIn()">
+                        <form class="align-middle" ng-submit="tryToAuth()">
+                            <div class="input-group input-group-sm">
+                                <label>Логин</label>
+                                <input class="login_group form-control" id="username" ng-model="user.username" type="text">
+                                <label style="padding-left: 15px;">Пароль</label>
+                                <input class="login_group form-control" id="userpass" ng-model="user.password" type="password">
+                                <button class="login_group btn btn-outline-warning btn-sm" type="submit">Log in</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Log out</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
         <div class="container" ng-controller="mainController">
-            <!--Angular-блок if-else не сработал-->
-            <h3><!--ng-if="productsPage!=[]/*productsList.length*/; then #fillTable else #empty"-->Доступные товары</h3>
-            <!--<ng-template #fillTable>-->
-            <table class="table table-hover">
-                <thead>
-                <td><b>Артикул</b></td>
-                <td><b>Название</b></td>
-                <td><b>Цена</b></td>
-                <td></td>
-                </thead>
-                <tbody>
+            <div ng-show="getProducts()">
+                <!--Angular-блок if-else не сработал-->
+                <h3><!--ng-if="productsPage!=[]/*productsList.length*/; then #fillTable else #empty"-->Доступные товары</h3>
+                <!--<ng-template #fillTable>-->
+                <table class="table table-hover">
+                    <thead>
+                    <td><b>Артикул</b></td>
+                    <td><b>Название</b></td>
+                    <td><b>Цена</b></td>
+                    <td></td>
+                    </thead>
+                    <tbody>
                     <!--List переделан в/заменен Page-->
                     <tr ng-repeat="s in productsPage.content"><!--productsList-->
                         <td>{{s.id}}</td>
                         <td>{{s.title}}</td>
                         <td>{{s.cost}}</td>
                         <td><button class="btn btn-success btn-sm" ng-click="addToCart(s.id, s.title, s.cost)">В корзину</button></td>
-                        <td><button class="btn btn-danger btn-sm" ng-click="delProduct(s.id)">Удалить</button></td>
                     </tr>
-                </tbody>
-            </table>
-            <div>
-                <button class="btn btn-secondary btn-sm" ng-click="showPage('prev')">След. страница</button><!--style="visibility:hidden"-->
-                <button class="btn btn-secondary btn-sm" ng-click="showPage('next')">Пред. страница</button>
-            </div>
-            <div class="group_flt_new_crt">
-                <!--<ng-template #empty>
-                    <p>Нет доступных товаров</p>
-                </ng-template>-->
-                <!-- переход на страницу добавления товара не выполняется,
-                     возможно из-за того, что у кнопки не был определен тип,
-                     поэтому поля для нового товара размещены здесь же
-                <button class="btn btn-primary" ng-href="new_product.html">Добавить товар</button>
-                 -->
-                <div class="group_flt_new_crt_member">
-                    <!-- фильтры для отображения товаров -->
-                    <form novalidate ng-submit="getProducts()">
-                        <p><b>Фильтры</b></p>
-                        <div>
-                            <label for="fltTitle">Название</label>
-                            <input type="text" class="form-control" id="fltTitle" ng-model="filter.title">
-                        </div>
-                        <br>
-                        <div>
-                            <label for="fltMinCost">Мин. цена</label>
-                            <input type="number" class="form-control" id="fltMinCost" min="1" ng-model="filter.min_cost">
-                        </div>
-                        <br>
-                        <div>
-                            <label for="fltMaxCost">Макс. цена</label>
-                            <input type="number" class="form-control" id="fltMaxCost" min="1" ng-model="filter.max_cost">
-                        </div>
-                        <br>
-                        <div>
-                            <label for="pageSize">Товаров на странице</label>
-                            <input type="number" class="form-control" id="pageSize" min="1" ng-model="filter.page_size">
-                        </div>
-                        <br>
-                        <div>
-                            <button class="btn btn-outline-secondary btn-sm" type="submit">Применить</button>
-                            <!--кнопка с типом reset (с HTML 2.0, поддерживается всеми браузерами) выполняет
-                                сброс в начальное состояние всех элементов в пределах одного блока,
-                                в данном случае - внешнего (группа "фильтры"), однако после такого сброса
-                                нажатие на "применить" не приводит к обновлению списка товаров-->
-                            <button class="btn btn-outline-light btn-sm" type="reset">Сбросить</button>
-                        </div>
-                        <p></p>
-                    </form>
+                    </tbody>
+                </table>
+                <div>
+                    <button class="btn btn-secondary btn-sm" ng-click="showPage('prev')">След. страница</button><!--style="visibility:hidden"-->
+                    <button class="btn btn-secondary btn-sm" ng-click="showPage('next')">Пред. страница</button>
                 </div>
-                <div class="group_flt_new_crt_member">
-                    <!-- добавление товаров -->
-                    <form novalidate ng-submit="addProduct()">
-                        <p><b>Новый товар</b></p>
-                        <div>
-                            <label for="title">Название</label>
-                            <input type="text" class="form-control" id="title" ng-model="newProduct.title">
-                        </div><br>
-                        <div>
-                            <label for="price">Цена</label>
-                            <input type="number" class="form-control" id="price" ng-model="newProduct.cost">
-                        </div><br>
-                        <button class="btn btn-primary btn-sm" type="submit">Добавить</button>
-                        <p></p>
-                    </form>
-                    <!--</ng-template>-->
-                </div>
-                <div class="group_flt_new_crt_member">
-                    <p><b>Корзина</b></p>
-                    <table class="table table-hover">
-                        <thead>
+                <div class="group_flt_new_crt">
+                    <!-- переход на страницу добавления товара не выполняется,
+                         возможно из-за того, что у кнопки не был определен тип,
+                         поэтому поля для нового товара размещены здесь же
+                    <button class="btn btn-primary" ng-href="new_product.html">Добавить товар</button>
+                     -->
+                    <div class="group_flt_new_crt_member">
+                        <!-- фильтры для отображения товаров -->
+                        <form novalidate ng-submit="getProducts()">
+                            <p><b>Фильтры</b></p>
+                            <div>
+                                <label for="fltTitle">Название</label>
+                                <input type="text" class="form-control" id="fltTitle" ng-model="filter.title">
+                            </div>
+                            <br>
+                            <div>
+                                <label for="fltMinCost">Мин. цена</label>
+                                <input type="number" class="form-control" id="fltMinCost" min="1" ng-model="filter.min_cost">
+                            </div>
+                            <br>
+                            <div>
+                                <label for="fltMaxCost">Макс. цена</label>
+                                <input type="number" class="form-control" id="fltMaxCost" min="1" ng-model="filter.max_cost">
+                            </div>
+                            <br>
+                            <div>
+                                <label for="pageSize">Товаров на странице</label>
+                                <input type="number" class="form-control" id="pageSize" min="1" ng-model="filter.page_size">
+                            </div>
+                            <br>
+                            <div>
+                                <button class="btn btn-outline-secondary btn-sm" type="submit">Применить</button>
+                                <!--кнопка с типом reset (с HTML 2.0, поддерживается всеми браузерами) выполняет
+                                    сброс в начальное состояние всех элементов в пределах одного блока,
+                                    в данном случае - внешнего (группа "фильтры"), однако после такого сброса
+                                    нажатие на "применить" не приводит к обновлению списка товаров-->
+                                <button class="btn btn-outline-light btn-sm" type="reset">Сбросить</button>
+                            </div>
+                            <p></p>
+                        </form>
+                    </div>
+                    <div class="group_flt_new_crt_member">
+                        <p><b>Корзина</b></p>
+                        <table class="table table-hover">
+                            <thead>
                             <td><b>Артикул</b></td>
                             <td><b>Название</b></td>
                             <td><b>Цена</b></td>
                             <td><b>Количество</b></td>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <tr ng-repeat="c in cartContent">
                                 <td>{{c.id}}</td>
                                 <td>{{c.title}}</td>
                                 <td>{{c.cost}}</td>
                                 <td>{{c.quantity}}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+            </div>
+            <div ng-show="!getProducts()">
+                <!--<ng-template #empty>-->
+                <h3>Нет доступных товаров</h3>
+                <!--</ng-template>-->
             </div>
         </div>
     </body>

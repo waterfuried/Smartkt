@@ -4,6 +4,9 @@ angular.module('app', []).controller('mainController', function ($scope, $http) 
           products = contextPath+'/products',
           cart = contextPath+'/cart';
 
+    /*
+        функции для списка товаров
+    */
     $scope.getProducts = function (page = 1) {
         //$http.get(contextPath+'/all')
         $http({
@@ -20,6 +23,8 @@ angular.module('app', []).controller('mainController', function ($scope, $http) 
             }
         }).then(function (response) {
             $scope.productsPage/*productsList*/ = response.data;//.content
+            console.log(response.data);
+            return response.data != [];
             /*по запросу получается список с заданными параметрами, в том числе -
               с кол-вом отображаемых на странице элементов. Чтобы узнать общее число
               страниц, нужно выполнять другой запрос, получающий полный список*/
@@ -45,6 +50,9 @@ angular.module('app', []).controller('mainController', function ($scope, $http) 
         .then(function (response) { $scope.getProducts(); });
     }
 
+    /*
+        функции работы с корзиной
+    */
     $scope.addToCart = function (id, title, cost) {
 	    console.log('cart: product.id='+id);
 	    var data = {
@@ -59,6 +67,11 @@ angular.module('app', []).controller('mainController', function ($scope, $http) 
 	    //func = function() { /* действия, но какие ? */ }
             .then(function (response) { $scope.getCartContent(); });
     };
+
+    $scope.removeFromCart = function (id) {
+        $http.delete(cart+'/'+id)
+            .then(function (response) { $scope.getCartContent(); });
+    }
 
     $scope.getCartContent = function () {
         $http({
