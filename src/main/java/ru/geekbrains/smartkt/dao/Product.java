@@ -17,7 +17,7 @@ import java.util.*;
 @Entity
 @Table(name = "products")
 @Data
-// создать набор конструкторов с 1 параметром для каждого из полей, а также конструктор без параметров
+// create constructor with 1 parameter for all FINAL fields and/or for those marked with @NonNull
 @RequiredArgsConstructor
 public class Product {
     @Id

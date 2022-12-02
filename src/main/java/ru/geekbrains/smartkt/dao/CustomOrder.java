@@ -1,5 +1,7 @@
 package ru.geekbrains.smartkt.dao;
 
+import ru.geekbrains.smartkt.dao.users.Customer;
+
 import javax.persistence.*;
 
 import lombok.*;

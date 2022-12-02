@@ -1,15 +1,17 @@
 package ru.geekbrains.smartkt.repositories;
 
-import ru.geekbrains.smartkt.dao.Customer;
+import ru.geekbrains.smartkt.dao.users.Customer;
 
 import org.springframework.stereotype.Repository;
-import javax.annotation.PostConstruct;
+import org.springframework.data.jpa.repository.*;
+
+//import jakarta.annotation.PostConstruct; //import javax.annotation.PostConstruct;
 
 import java.util.*;
 
 @Repository
-public class CustomerRepository {
-    private List<Customer> customers;
+public /*class*/interface CustomerRepository extends JpaRepository<Customer, Integer> {
+    /*private List<Customer> customers;
 
     @PostConstruct
     public void init() { customers = new ArrayList<>(); }
@@ -33,5 +35,9 @@ public class CustomerRepository {
         catch (RuntimeException ex) { customers.add(customer); }
     }
 
-    public void delete(Integer id) throws RuntimeException { customers.remove(find(id)); }
+    public void delete(Integer id) throws RuntimeException { customers.remove(find(id)); }*/
+
+    Optional<Customer> findByUsername(String name);
+
+    List<Customer> findAll();
 }

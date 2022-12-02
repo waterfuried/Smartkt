@@ -8,6 +8,8 @@ package ru.geekbrains.smartkt.dto;
 import ru.geekbrains.smartkt.dao.Product;
 import ru.geekbrains.smartkt.exceptions.ValidationException;
 
+import static ru.geekbrains.smartkt.prefs.Prefs.*;
+
 import java.util.*;
 
 import lombok.*;
@@ -30,8 +32,8 @@ public class ProductDTO {
     public void validate() {
         List<String> errors = new ArrayList<>();
 
-        if (cost < 1) errors.add("Недопустимая цена товара: "+cost);
-        if (title.isBlank()) errors.add("Продукт не может не иметь названия");
+        if (cost < 1) errors.add(ERR_INVALID_PRODUCT_PRICE+": "+cost);
+        if (title.isBlank()) errors.add(ERR_MUST_HAVE_TITLE);
 
         if (!errors.isEmpty()) throw new ValidationException(errors);
     }

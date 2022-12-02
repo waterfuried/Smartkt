@@ -31,7 +31,7 @@ public class ProductService {
     // если товар не найден, нужно возвращать не null, а исключение
     public ProductDTO getOne(int id) {
         Product p = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(PRODUCT_NOT_FOUND+": id="+id));
+                .orElseThrow(() -> new ResourceNotFoundException(ERR_PRODUCT_NOT_FOUND +": id="+id));
         return new ProductDTO(p);
     }
 
@@ -56,7 +56,7 @@ public class ProductService {
         //@GetMapping("/prev")
         //public List<Product> getPrevPage() {
         //return service.findAllProductsByPrevPage();
-        if (title != null && title.trim().length() > 0) spec = spec.and(textLikeIgnoreCase("title", title));
+        if (title != null && !title.isBlank()) spec = spec.and(textLikeIgnoreCase("title", title));
         if (minCost != null) spec = spec.and(intGreaterThanOrEqualTo("cost", minCost));
         if (maxCost != null) spec = spec.and(intLessThanOrEqualTo("cost", maxCost));
 
@@ -87,7 +87,7 @@ public class ProductService {
     @Transactional
     public Product update(ProductDTO product) {
         Product p = repository.findById(product.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(CANNOT_UPDATE+", id="+product.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException(ERR_CANNOT_UPDATE +", id="+product.getId()));
         p.setCost(product.getCost());
         p.setTitle(product.getTitle());
         return p;

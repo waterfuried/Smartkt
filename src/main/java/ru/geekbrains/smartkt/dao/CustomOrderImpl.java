@@ -1,5 +1,6 @@
 package ru.geekbrains.smartkt.dao;
 
+import ru.geekbrains.smartkt.dao.users.Customer;
 import ru.geekbrains.smartkt.services.hibernate.SessionFactoryUtils;
 
 import org.hibernate.Session;
