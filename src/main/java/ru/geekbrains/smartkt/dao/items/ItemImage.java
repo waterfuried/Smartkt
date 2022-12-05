@@ -1,4 +1,4 @@
-package ru.geekbrains.smartkt.dao.users;
+package ru.geekbrains.smartkt.dao.items;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -10,28 +10,28 @@ import java.time.*;
 
 import lombok.*;
 
-// роль пользователя
+// изображение товара
 @Entity
-@Table(name = "roles")
+@Table(name = "item_images")
 @Data
 @RequiredArgsConstructor
-public class Role {
+public class ItemImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    // наименование роли: гость, пользователь, менеджер, администратор
-    @Column(name = "designation")
-    @NonNull
-    private String designation;
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 
-    // время добавления
+    @Column(name="path")
+    private String path;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // время модификции
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

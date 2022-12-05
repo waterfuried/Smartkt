@@ -5,7 +5,7 @@
 */
 package ru.geekbrains.smartkt.dto;
 
-import ru.geekbrains.smartkt.dao.Product;
+import ru.geekbrains.smartkt.dao.items.Item;
 import ru.geekbrains.smartkt.exceptions.ValidationException;
 
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
@@ -23,10 +23,10 @@ public class ProductDTO {
     private String title;
     private Integer cost;
 
-    public ProductDTO(Product product) {
-        this.id = product.getId();
-        this.title = product.getTitle();
-        this.cost = product.getCost();
+    public ProductDTO(Item item) {
+        this.id = item.getId();
+        this.title = item.getTitle();
+        this.cost = item.getCost();
     }
 
     public void validate() {

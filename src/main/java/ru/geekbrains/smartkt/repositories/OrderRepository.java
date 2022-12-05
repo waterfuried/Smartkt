@@ -1,6 +1,6 @@
 package ru.geekbrains.smartkt.repositories;
 
-import ru.geekbrains.smartkt.dao.CustomOrder;
+import ru.geekbrains.smartkt.dao.orders.CustomOrder;
 
 import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;

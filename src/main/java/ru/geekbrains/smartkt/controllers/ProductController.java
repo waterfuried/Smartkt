@@ -2,7 +2,7 @@ package ru.geekbrains.smartkt.controllers;
 
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
-import ru.geekbrains.smartkt.dao.Product;
+import ru.geekbrains.smartkt.dao.items.Item;
 import ru.geekbrains.smartkt.dto.ProductDTO;
 
 import ru.geekbrains.smartkt.services.ProductService;
@@ -86,7 +86,7 @@ public class ProductController {
         // если какие-то данные пользователем не введены или введены некорректно,
         // выбросить исключение ValidationException
         product.validate();
-        return new ProductDTO(service.add(new Product(product)));
+        return new ProductDTO(service.add(new Item(product)));
     }
 
     // удаление товара по id

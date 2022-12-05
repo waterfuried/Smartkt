@@ -1,6 +1,5 @@
 package ru.geekbrains.smartkt.dao.users;
 
-import ru.geekbrains.smartkt.dao.CustomOrder;
 import ru.geekbrains.smartkt.dto.UserDTO;
 
 import javax.persistence.*;
@@ -16,7 +15,7 @@ import lombok.*;
 
 // В базе данных необходимо реализовать возможность хранить информацию о покупателях (id, имя)
 @Entity
-@Table(name = "customers")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,36 +25,49 @@ public class Customer {
     @Column(name = "id")
     private Integer id;
 
+    // гостевые (неавторизованные) пользователи смогут посмотреть наличие
+    // интересующего их товара и забрать его самовывозом;
+    // в БД же хранятся только зарегистрированные
+
+    // имя
     @Column(name = "name")
     // из-за использования в репозитории CustomerRepository
     // интерфейса JpaRepository имя поля должно быть именно таким
     private String username;
 
+    // пароль
     @Column(name = "password")
     private String password;
 
+	// и почта, и адрес, и телефон - поля необязательные для заполнения,
+	// однако, если пользователь захочет получить товар доставкой,
+	// какое-либо из них ему придется указать
     @Column(name = "email")
     private String email;
 
-    // связь с таблицей ролей
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone")
+    private String phone;
+
+    // связь с таблицей ролей,
+    // многие-ко-многим
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    // время регистрации
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    // время изменения регистрации
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    //списки заказов покупателей можно определить запросом
-    //select customers.name, orders.id from orders inner join customers on customers.id = orders.customer_id
-    @OneToMany(mappedBy= "customer") // связь с таблицей заказов (один-к-многим, покупатель-заказы)
-    private List<CustomOrder> orders;
 
     public Customer(UserDTO user) {
         id = user.getId();
