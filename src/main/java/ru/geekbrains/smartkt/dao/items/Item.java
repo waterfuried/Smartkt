@@ -35,21 +35,9 @@ public class Item {
     @Column(name = "id")
     private Integer id;
 
-    // наимнование
+    // наименование
     @Column(name = "title")
     private String title;
-
-    // цена
-    @Column(name = "cost")
-    private Integer cost;
-
-    // краткое описание
-    @Column(name = "desc_short")
-    private String descriptionShort;
-
-    // полное описание
-    @Column(name = "desc_full")
-    private String descriptionFull;
 
     /* о связях:
             1. связь устанавливается с классом сущности по его полю,
@@ -58,6 +46,26 @@ public class Item {
                удалят как объект сущности, так и записи в соответствующих сущностям таблицах
                для этого в аннотации нужно указать (через запятую) cascade = CascadeType.REMOVE
     */
+
+    // связь с таблицей производителей/поставщиков
+    @OneToMany(mappedBy = "id")
+    @Column(name = "provider_id")
+    private List<ItemProvider> providers;
+
+    // TODO(?): поскольку у производителей/поставщиков цены и количества товаров могут быть разными,
+    //  наверно, следующие 2 поля также нужно делать списками
+    // цена у производителя/поставщика
+    @Column(name = "cost")
+    private Integer cost;
+
+    // кол-во у производителя/поставщика
+    @Column(name = "amount")
+    private Integer amount;
+
+    // связь с таблицей описаний товаров
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private ItemDescription description;
 
     // связь с таблицей изображений товаров
     @OneToMany(mappedBy = "item")
@@ -72,11 +80,6 @@ public class Item {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    // связь с таблицей товаров на их складе (один-к-одному)
-    @OneToOne
-    @JoinColumn(name = "item")
-    private StoredItem storedItems;
 
     public Item(Integer id, String title, Integer cost) {
         this.id = id;
