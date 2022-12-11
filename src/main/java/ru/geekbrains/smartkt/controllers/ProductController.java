@@ -1,12 +1,5 @@
 package ru.geekbrains.smartkt.controllers;
 
-import static ru.geekbrains.smartkt.prefs.Prefs.*;
-
-import ru.geekbrains.smartkt.dao.Product;
-import ru.geekbrains.smartkt.dto.ProductDTO;
-
-import ru.geekbrains.smartkt.services.ProductService;
-
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +7,11 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.*;
 
 import lombok.*;
+
+import ru.geekbrains.smartkt.dao.items.StoredItem;
+import ru.geekbrains.smartkt.dto.ProductDTO;
+import ru.geekbrains.smartkt.services.ProductService;
+import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
 // Сделать RestController позволяющий выполнять набор операций над сущностью
 // Реализуйте REST контроллер для работы с сущностью Product
@@ -69,9 +67,9 @@ public class ProductController {
 
     /*
         создание нового товара
-        10.1. Создать страницу со списком товаров, на которой можно добавлять позиции
-              и редактировать существующие.
-              На эту страницу должны иметь доступ админы и менеджеры.
+        Создать страницу со списком товаров, на которой можно добавлять позиции
+        и редактировать существующие.
+        На эту страницу должны иметь доступ админы и менеджеры.
 
         входные данные приходят тоже не по полной, а по контрактной модели
         при добавлении нового товара в БД он еще не имеет своего id,
@@ -80,24 +78,24 @@ public class ProductController {
         требовалось записать в БД и что было записано фактически
     */
     @PostMapping//("/")
-    @Secured({"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_MANAGER", "ROLE_SUPERMANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
     public ProductDTO addProduct(@RequestBody ProductDTO product) {
         product.setId(null); // если был передан уже существующий товар, сбросить его идентификатор
         // если какие-то данные пользователем не введены или введены некорректно,
         // выбросить исключение ValidationException
         product.validate();
-        return new ProductDTO(service.add(new Product(product)));
+        return new ProductDTO(service.add(new StoredItem(product)));
     }
 
     // удаление товара по id
     @DeleteMapping("/{id}")//("/products/delete/{id}")
-    @Secured({"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_MANAGER", "ROLE_SUPERMANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
     public void delProduct(@PathVariable Integer id) {
         service.deleteOne(id);
     }
 
     @PutMapping
-    @Secured({"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_MANAGER", "ROLE_SUPERMANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
     public void updateProduct(@RequestBody ProductDTO product) {
         service.update(product);
     }

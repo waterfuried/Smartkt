@@ -6,6 +6,7 @@ public class Prefs {
     public static final int DEFAULT_PAGE_SIZE = 10;
 
     public static final String ERR_PRODUCT_NOT_FOUND = "Товар не найден";
+    public static final String ERR_NOT_FOUND = "%s не найден%s";
     public static final String ERR_CANNOT_UPDATE = "Обновление товара в БД невозможно - "
             + ERR_PRODUCT_NOT_FOUND.toLowerCase();
     public static final String ERR_INVALID_PRODUCT_PRICE = "Недопустимая цена товара";

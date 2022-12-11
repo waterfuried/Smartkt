@@ -14,21 +14,23 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
     private Integer id;
-    private String name, password, email, roles;
+    private String name, password, email, address, phone, roles;
     private LocalDateTime createdAt, updatedAt;
 
     public UserDTO(Customer c) {
         UserDTO dto = new UserDTO();
         dto.setId(c.getId());
-        dto.setName(c.getUsername());
+        dto.setName(c.getName());
         dto.setPassword(c.getPassword());
         dto.setEmail(c.getEmail());
+        dto.setAddress(c.getAddress());
+        dto.setPhone(c.getPhone());
         dto.setCreatedAt(c.getCreatedAt());
         dto.setUpdatedAt(c.getUpdatedAt());
 
         List<Role> roles = c.getRoles();
         StringBuilder sb = new StringBuilder();
-        roles.forEach(role -> sb.append(role.getType()).append(", "));
+        roles.forEach(role -> sb.append(role.getDesignation()).append(", "));
         if (sb.length() > 0) dto.setRoles(sb.substring(0, sb.length()-2));
     }
 

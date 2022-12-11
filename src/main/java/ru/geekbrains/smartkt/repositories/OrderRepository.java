@@ -1,16 +1,18 @@
 package ru.geekbrains.smartkt.repositories;
 
-import ru.geekbrains.smartkt.dao.CustomOrder;
+import ru.geekbrains.smartkt.dao.orders.CustomOrder;
 
 import org.springframework.stereotype.Repository;
-import javax.annotation.PostConstruct;
+import org.springframework.data.jpa.repository.JpaRepository;
+//import javax.annotation.PostConstruct;
 
-import java.util.*;
-import java.util.stream.*;
+//import java.util.*;
+//import java.util.stream.*;
 
 @Repository
-public class OrderRepository {
-    private List<CustomOrder> orders;
+public /*class*/interface OrderRepository extends JpaRepository<CustomOrder, Integer> {
+
+    /*private List<CustomOrder> orders;
 
     @PostConstruct
     public void init() { orders = new ArrayList<>(); }
@@ -32,5 +34,5 @@ public class OrderRepository {
                 .findFirst().orElse(null) == null) orders.add(customOrder);
     }
 
-    public void delete(Integer id) throws RuntimeException { orders.remove(find(id)); }
+    public void delete(Integer id) throws RuntimeException { orders.remove(find(id)); }*/
 }

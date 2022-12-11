@@ -13,8 +13,8 @@
         <property name="show_sql">true</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
-        <mapping class="ru.geekbrains.smartkt.dao.Product"/>
-        <mapping class="ru.geekbrains.smartkt.dao.CustomOrder"/>
+        <mapping class="ru.geekbrains.smartkt.dao.items.Item"/>
+        <mapping class="ru.geekbrains.smartkt.dao.orders.CustomOrder"/>
         <mapping class="ru.geekbrains.smartkt.dao.users.Customer"/>
         <!--<mapping class="ru.geekbrains.smartkt.dao.OrderedProduct"/>-->
     </session-factory>

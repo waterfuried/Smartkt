@@ -1,4 +1,4 @@
-package ru.geekbrains.smartkt.dao.users;
+package ru.geekbrains.smartkt.dao.items;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -10,28 +10,29 @@ import java.time.*;
 
 import lombok.*;
 
-// роль пользователя
+// описание товара
 @Entity
-@Table(name = "roles")
+@Table(name = "item_descriptions")
 @Data
 @RequiredArgsConstructor
-public class Role {
+public class ItemDescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    // наименование роли: гость, пользователь, менеджер, администратор
-    @Column(name = "designation")
-    @NonNull
-    private String designation;
+    // краткое
+    @Column(name = "short_text")
+    private String descriptionShort;
 
-    // время добавления
+    // полное описание
+    @Column(name = "full_text")
+    private String descriptionFull;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // время модификции
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

@@ -1,8 +1,5 @@
 package ru.geekbrains.smartkt.dao.users;
 
-import ru.geekbrains.smartkt.dao.CustomOrder;
-import ru.geekbrains.smartkt.dto.UserDTO;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,9 +11,27 @@ import java.util.*;
 
 import lombok.*;
 
-// В базе данных необходимо реализовать возможность хранить информацию о покупателях (id, имя)
+import ru.geekbrains.smartkt.dto.UserDTO;
+
+/*
+    В базе данных необходимо реализовать возможность хранить информацию о покупателях (id, имя)
+
+    1. имена полей определяют названия методов репозитория CustomerRepository,
+    поскольку он реализует интерфейс JpaRepository:
+    например, метод, производящий поиск по имени, может называться findByName,
+    но если поле называлось бы Username, то метод - findByUsername
+
+    2. гостевые (неавторизованные) пользователи смогут посмотреть наличие
+    интересующего их товара и забрать его самовывозом;
+    в БД же хранятся только зарегистрированные
+
+    3. и почта, и адрес, и телефон - поля необязательные для заполнения,
+    однако, если пользователь захочет получить товар доставкой,
+    какое-либо из них ему придется указать
+
+*/
 @Entity
-@Table(name = "customers")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,41 +41,45 @@ public class Customer {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
-    // из-за использования в репозитории CustomerRepository
-    // интерфейса JpaRepository имя поля должно быть именно таким
-    private String username;
+    @Column(name = "name") // имя
+    private String name;
 
-    @Column(name = "password")
+    @Column(name = "password") // пароль
     private String password;
 
-    @Column(name = "email")
+    @Column(name = "email")  // почта
     private String email;
 
-    // связь с таблицей ролей
+    @Column(name = "address") // адрес
+    private String address;
+
+    @Column(name = "phone") // телефон
+    private String phone;
+
+    // связь с таблицей ролей,
+    // многие-ко-многим
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    // время регистрации
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    // время изменения регистрации
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    //списки заказов покупателей можно определить запросом
-    //select customers.name, orders.id from orders inner join customers on customers.id = orders.customer_id
-    @OneToMany(mappedBy= "customer") // связь с таблицей заказов (один-к-многим, покупатель-заказы)
-    private List<CustomOrder> orders;
-
     public Customer(UserDTO user) {
         id = user.getId();
-        username = user.getName();
+        name = user.getName();
         email = user.getEmail();
+        address = user.getAddress();
+        phone = user.getPhone();
         roles = new ArrayList<>();
         for (String role : user.getRoles().split(","))
             roles.add(new Role(role.trim()));
@@ -69,5 +88,5 @@ public class Customer {
     @Override
     // поскольку в CustomOrder есть поле Customer, вывод заказов покупателя здесь
     // приведет к перекрестным вызовам и, в итоге, к переполнению стека
-    public String toString() { return "Customer (id = "+id+", name = '"+username+"')"; }
+    public String toString() { return "Customer (id = "+id+", name = '"+name+"')"; }
 }
