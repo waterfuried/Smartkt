@@ -31,19 +31,19 @@ public class CustomerService implements UserDetailsService {
 
     public void delete(Integer id) { repository.delete(id); }*/
 
-    public Optional<Customer> find(String name) { return repository.findByUsername(name); }
+    public Optional<Customer> find(String name) { return repository.findByName(name); }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         Customer c = find(name)
                 .orElseThrow(() -> new UsernameNotFoundException("User '"+name+"' not found"));
-        return new User(c.getUsername(), c.getPassword(), mapRolesToAuthorities(c.getRoles()));
+        return new User(c.getName(), c.getPassword(), mapRolesToAuthorities(c.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role ->
-                new SimpleGrantedAuthority(role.getType())).collect(Collectors.toList());
+                new SimpleGrantedAuthority(role.getDesignation())).collect(Collectors.toList());
     }
 
     public List<UserDTO> getUsersList() {
@@ -51,5 +51,7 @@ public class CustomerService implements UserDetailsService {
         return users.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
-    public Customer add(Customer c) { return repository.save(c); }
+    public Customer addOrUpdate(Customer c) { return repository.save(c); }
+
+    public void delete(Integer id) { repository.deleteById(id); }
 }

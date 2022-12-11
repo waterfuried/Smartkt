@@ -26,13 +26,13 @@ public class OrderedItem {
     // многие-к-одному: в один заказ могут входить разные заказанные товары
     // (или - многие заказы могут ссылаться на этот заказанный товар)
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "order_id")
     private CustomOrder order;
 
     // связь с таблицей товаров
     // многие-к-одному: заказанный товар может быть одним из их множества на складе
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "item_id")
     private StoredItem item;
 
     // количество

@@ -1,7 +1,5 @@
 package ru.geekbrains.smartkt.dao.users;
 
-import ru.geekbrains.smartkt.dto.UserDTO;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,7 +11,25 @@ import java.util.*;
 
 import lombok.*;
 
-// В базе данных необходимо реализовать возможность хранить информацию о покупателях (id, имя)
+import ru.geekbrains.smartkt.dto.UserDTO;
+
+/*
+    В базе данных необходимо реализовать возможность хранить информацию о покупателях (id, имя)
+
+    1. имена полей определяют названия методов репозитория CustomerRepository,
+    поскольку он реализует интерфейс JpaRepository:
+    например, метод, производящий поиск по имени, может называться findByName,
+    но если поле называлось бы Username, то метод - findByUsername
+
+    2. гостевые (неавторизованные) пользователи смогут посмотреть наличие
+    интересующего их товара и забрать его самовывозом;
+    в БД же хранятся только зарегистрированные
+
+    3. и почта, и адрес, и телефон - поля необязательные для заполнения,
+    однако, если пользователь захочет получить товар доставкой,
+    какое-либо из них ему придется указать
+
+*/
 @Entity
 @Table(name = "users")
 @Data
@@ -25,30 +41,19 @@ public class Customer {
     @Column(name = "id")
     private Integer id;
 
-    // гостевые (неавторизованные) пользователи смогут посмотреть наличие
-    // интересующего их товара и забрать его самовывозом;
-    // в БД же хранятся только зарегистрированные
+    @Column(name = "name") // имя
+    private String name;
 
-    // имя
-    @Column(name = "name")
-    // из-за использования в репозитории CustomerRepository
-    // интерфейса JpaRepository имя поля должно быть именно таким
-    private String username;
-
-    // пароль
-    @Column(name = "password")
+    @Column(name = "password") // пароль
     private String password;
 
-    // и почта, и адрес, и телефон - поля необязательные для заполнения,
-    // однако, если пользователь захочет получить товар доставкой,
-    // какое-либо из них ему придется указать
-    @Column(name = "email")
+    @Column(name = "email")  // почта
     private String email;
 
-    @Column(name = "address")
+    @Column(name = "address") // адрес
     private String address;
 
-    @Column(name = "phone")
+    @Column(name = "phone") // телефон
     private String phone;
 
     // связь с таблицей ролей,
@@ -71,8 +76,10 @@ public class Customer {
 
     public Customer(UserDTO user) {
         id = user.getId();
-        username = user.getName();
+        name = user.getName();
         email = user.getEmail();
+        address = user.getAddress();
+        phone = user.getPhone();
         roles = new ArrayList<>();
         for (String role : user.getRoles().split(","))
             roles.add(new Role(role.trim()));
@@ -81,5 +88,5 @@ public class Customer {
     @Override
     // поскольку в CustomOrder есть поле Customer, вывод заказов покупателя здесь
     // приведет к перекрестным вызовам и, в итоге, к переполнению стека
-    public String toString() { return "Customer (id = "+id+", name = '"+username+"')"; }
+    public String toString() { return "Customer (id = "+id+", name = '"+name+"')"; }
 }

@@ -7,8 +7,8 @@ import org.hibernate.Session;
 
 import java.util.*;
 
-// класс реализует логику выполнения CRUD-операций над сущностью Item
-public class ProductImpl implements Daocism<Item> {
+// класс реализует логику выполнения CRUD-операций над сущностью StoredItem
+public class ProductImpl implements Daocism<StoredItem> {
     private final SessionFactoryUtils sessionFactoryUtils;
 
     public ProductImpl(SessionFactoryUtils sessionFactoryUtils) {
@@ -16,32 +16,32 @@ public class ProductImpl implements Daocism<Item> {
     }
 
     @Override
-    public Item findById(Integer id) {
+    public StoredItem findById(Integer id) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            Item p = session.get(Item.class, id);
+            StoredItem p = session.get(StoredItem.class, id);
             session.getTransaction().commit();
             return p;
         }
     }
 
     @Override
-    public List<Item> findAll() {
+    public List<StoredItem> findAll() {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
-            List<Item> pl = session.createQuery("select p from Item p",
-                            Item.class)
+            List<StoredItem> pl = session.createQuery("select p from StoredItem p",
+                            StoredItem.class)
                     .getResultList();
             session.getTransaction().commit();
             return pl;
         }
     }
 
-    public Item findByTitle(String title) {
+    public StoredItem findByTitle(String title) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            Item p = session.createQuery("select p from Item p where p.title = :title",
-                            Item.class)
+            StoredItem p = session.createQuery("select p from StoredItem p where p.title = :title",
+                            StoredItem.class)
                     .setParameter("title", title)
                     .getSingleResult();
             session.getTransaction().commit();
@@ -50,7 +50,7 @@ public class ProductImpl implements Daocism<Item> {
     }
 
     @Override
-    public Item saveOrUpdate(Item item) {
+    public StoredItem saveOrUpdate(StoredItem item) {
         //            session.createQuery("update Item p set p.title :title where p.id = :id")
         //                    .setParameter("title", p.getTitle())
         //                    .setParameter("id", p.getId())
@@ -58,7 +58,7 @@ public class ProductImpl implements Daocism<Item> {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
             session.saveOrUpdate(item);
-            Item p = session.get(Item.class, item.getId());
+            StoredItem p = session.get(StoredItem.class, item.getId());
             //p.setTitle(item.getTitle());
             //p.setCost(item.getCost());
             session.getTransaction().commit();
@@ -70,7 +70,7 @@ public class ProductImpl implements Daocism<Item> {
     public void deleteById(Integer id) {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            session.delete(session.get(Item.class, id));
+            session.delete(session.get(StoredItem.class, id));
             //удаление запросом к БД происходит быстрее,
             //чем пометка объекта на удаление и его выполнение
             //session.createQuery("delete from Product p where p.id = :id")
@@ -91,10 +91,10 @@ public class ProductImpl implements Daocism<Item> {
         группа операций будет выполняться в рамках одной транзакции
     */
     public void test() {
-        Item p;
+        StoredItem p;
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            p = session.get(Item.class, 4);
+            p = session.get(StoredItem.class, 4);
             System.out.println("item with id = 4: "+p);
             session.getTransaction().commit();
         }

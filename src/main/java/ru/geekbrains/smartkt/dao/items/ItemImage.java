@@ -21,9 +21,10 @@ public class ItemImage {
     @Column(name = "id")
     private Integer id;
 
+    // связь с таблицей товаров на складе
     @ManyToOne
     @JoinColumn(name = "item_id")
-    private Item item;
+    private StoredItem item;
 
     @Column(name="path")
     private String path;

@@ -1,7 +1,7 @@
 package ru.geekbrains.smartkt.dao.orders;
 
 import ru.geekbrains.smartkt.dao.Daocism;
-import ru.geekbrains.smartkt.dao.items.Item;
+import ru.geekbrains.smartkt.dao.items.StoredItem;
 import ru.geekbrains.smartkt.dao.users.Customer;
 import ru.geekbrains.smartkt.services.hibernate.SessionFactoryUtils;
 
@@ -51,13 +51,13 @@ public class CustomOrderImpl implements Daocism<CustomOrder> {
     }
 
     // список всех купленных покупателем товаров
-    public List<Item> findAllOrderedProductsByCustomer(Integer customerId) {
+    public List<StoredItem> findAllOrderedProductsByCustomer(Integer customerId) {
         try (Session session = sessionFactoryUtils.getSession()){
             session.beginTransaction();
-            List<Item> pl = session
+            List<StoredItem> pl = session
                     .createQuery("select r.product from CustomOrder r"+
                             " where r.customer.id = :customerId and r.paid is not null",
-                            Item.class)
+                            StoredItem.class)
                     .setParameter("customerId", customerId)
                     .getResultList();
             session.getTransaction().commit();
@@ -74,7 +74,7 @@ public class CustomOrderImpl implements Daocism<CustomOrder> {
             Integer cost = session
                     .createQuery("select r.product.cost from CustomOrder r"+
                             " where r.product.id = :productId",
-                            Item.class)
+                            StoredItem.class)
                     .setParameter("productId", productId)
                     .getResultList().get(0).getCost();
             session.getTransaction().commit();

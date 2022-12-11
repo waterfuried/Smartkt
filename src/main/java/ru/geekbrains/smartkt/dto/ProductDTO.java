@@ -5,7 +5,7 @@
 */
 package ru.geekbrains.smartkt.dto;
 
-import ru.geekbrains.smartkt.dao.items.Item;
+import ru.geekbrains.smartkt.dao.items.StoredItem;
 import ru.geekbrains.smartkt.exceptions.ValidationException;
 
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
@@ -21,12 +21,13 @@ import lombok.*;
 public class ProductDTO {
     private Integer id;
     private String title;
-    private Integer cost;
+    private Integer cost, amount;
 
-    public ProductDTO(Item item) {
+    public ProductDTO(StoredItem item) {
         this.id = item.getId();
         this.title = item.getTitle();
         this.cost = item.getCost();
+        this.amount = item.getAmount();
     }
 
     public void validate() {

@@ -41,7 +41,7 @@ public class CustomOrder {
     // связь с таблицей состояний заказов
     // многие-к-одному: заказ может находиться в одном состоянии из их множества
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "status_id")
     private OrderStatus status;
 
     // связь с таблицей покупателей
@@ -50,15 +50,16 @@ public class CustomOrder {
     // select customers.name, orders.id from orders inner join customers on customers.id = orders.customer_id
     @ManyToOne
     /*
-       такое поле для этой связи будет использоваться Hibernate по умолчанию;
+       похоже, что такое имя для этого столбца будет использоваться Hibernate по умолчанию;
        если нужно другое, его следует указать явно
     */
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     // связь с таблицей доставок
     // один-к-одному: заказ может быть получен каким-либо одним выбранным способом
     @OneToOne
+    @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     // дата и время создания заказа

@@ -11,6 +11,11 @@ import java.util.*;
 
 @Repository
 public /*class*/interface CustomerRepository extends JpaRepository<Customer, Integer> {
+    Optional<Customer> findByName(String name);
+
+    Optional<Customer> findById(Integer id);
+
+    List<Customer> findAll();
     /*private List<Customer> customers;
 
     @PostConstruct
@@ -36,8 +41,4 @@ public /*class*/interface CustomerRepository extends JpaRepository<Customer, Int
     }
 
     public void delete(Integer id) throws RuntimeException { customers.remove(find(id)); }*/
-
-    Optional<Customer> findByUsername(String name);
-
-    List<Customer> findAll();
 }
