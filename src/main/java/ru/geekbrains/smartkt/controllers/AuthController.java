@@ -10,6 +10,7 @@ import static ru.geekbrains.smartkt.prefs.Prefs.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.*;
 import org.springframework.http.*;
 
 import lombok.*;
@@ -29,10 +30,17 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(r.getUsername(), r.getPassword()));
-        } catch (BadCredentialsException ex) {
-            return new ResponseEntity<>(
-                    new AppError(HttpStatus.UNAUTHORIZED.value(),
-                            ERR_WRONG_AUTH), HttpStatus.UNAUTHORIZED);
+        } catch (AuthenticationException ex) {
+            HttpStatus status;
+            String message;
+            if (ex instanceof BadCredentialsException) {
+                status = HttpStatus.UNAUTHORIZED;
+                message = ERR_WRONG_AUTH;
+            } else {
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+                message = ex.getMessage();
+            }
+            return new ResponseEntity<>(new AppError(status.value(), message), status);
         }
         UserDetails userDetails = service.loadUserByUsername(r.getUsername());
         return ResponseEntity.ok(new Response(tokenUtil.generateToken(userDetails)));

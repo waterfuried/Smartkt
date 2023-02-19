@@ -28,7 +28,6 @@ import ru.geekbrains.smartkt.dto.UserDTO;
     3. и почта, и адрес, и телефон - поля необязательные для заполнения,
     однако, если пользователь захочет получить товар доставкой,
     какое-либо из них ему придется указать
-
 */
 @Entity
 @Table(name = "users")
@@ -41,7 +40,7 @@ public class Customer {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name") // имя
+    @Column(name = "username") // имя
     private String name;
 
     @Column(name = "password") // пароль
@@ -59,7 +58,7 @@ public class Customer {
     // связь с таблицей ролей,
     // многие-ко-многим
     @ManyToMany
-    @JoinTable(name = "users_roles",
+    @JoinTable(name = "ur_links",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;

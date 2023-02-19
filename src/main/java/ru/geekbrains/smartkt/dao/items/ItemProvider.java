@@ -7,7 +7,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.*;
 
 import java.time.*;
-import java.util.List;
 
 import lombok.*;
 
@@ -26,10 +25,9 @@ public class ItemProvider {
     @Column(name = "title")
     private String title;
 
-    // связь с таблицей товаров на складе,
-    // один-ко-многим: какой-либо производитель/поставщик может производить/поставлять разные товары
-    @OneToMany(mappedBy = "id")
-    private List<StoredItem> items;
+    // обратная связь с таблицей товаров на складе - перекрестная, приводящая к зацикливанию
+    //@OneToMany(mappedBy = "id")
+    //private List<StoredItem> items;
 
     @CreationTimestamp
     @Column(name = "created_at")

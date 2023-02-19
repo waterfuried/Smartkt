@@ -1,10 +1,9 @@
 package ru.geekbrains.smartkt.exceptions;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.*;
-
 import org.springframework.web.bind.annotation.*;
+
+import lombok.extern.slf4j.Slf4j;
 
 // специализированный компонент, предназначенный для перехвата всех исключений приложения
 @ControllerAdvice
@@ -13,7 +12,8 @@ public class GlobalExceptionHandler {
     // методы-обработчики исключений, в аннотации можно указывать классы исключений
     @ExceptionHandler
     public ResponseEntity<AppError> catchResourceNotFoundException(ResourceNotFoundException ex) {
-        log.error(ex.getMessage(), ex);
+        String logMessage = ex.getLogMessage();
+        log.error(ex.getMessage() + (logMessage == null || logMessage.isBlank() ? "" : ": "+logMessage), ex);
         return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), ex.getMessage()),
                 HttpStatus.NOT_FOUND);
     }

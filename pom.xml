@@ -14,7 +14,7 @@
 	</parent>
 
 	<groupId>ru.geekbrains</groupId>
-	<artifactId>smartkt</artifactId>
+	<artifactId>Smartkt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>smartkt</name>
 	<description>Educational e-market project for Spring Boot</description>
@@ -88,6 +88,22 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
+		</dependency>
+		<!-- Spring AOP = Aspect Oriented Programming -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+		<!-- WSDL (Web Services Definition Language)
+			 used for creating objects and sending requests/getting responses
+			 via SOAP (Simple Objet Access Protocol) over HTTP -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
 		</dependency>
 	</dependencies>
 </project>

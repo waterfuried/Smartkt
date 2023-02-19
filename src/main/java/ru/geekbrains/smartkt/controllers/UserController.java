@@ -1,15 +1,15 @@
 package ru.geekbrains.smartkt.controllers;
 
-import ru.geekbrains.smartkt.dao.users.Customer;
-import ru.geekbrains.smartkt.dto.*;
-import ru.geekbrains.smartkt.services.CustomerService;
-
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 import lombok.*;
+
+import ru.geekbrains.smartkt.dao.users.Customer;
+import ru.geekbrains.smartkt.dto.*;
+import ru.geekbrains.smartkt.services.CustomerService;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -42,4 +42,8 @@ public class UserController {
     @Secured({"ROLE_SUPER_ADMIN"})
     @DeleteMapping("/{id}")
     public void removeUser(@PathVariable Integer id) { service.delete(id); }
+
+    // контакты покупателя (адрес - для доставки, телефон/почта - для связи) при оформлении заказа
+    @GetMapping("/contacts/{id}")
+    public UserDTO getUserData(@PathVariable Integer id) { return service.loadUserById(id); }
 }

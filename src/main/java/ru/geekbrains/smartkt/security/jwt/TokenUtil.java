@@ -30,7 +30,6 @@ public class TokenUtil {
                 .collect(Collectors.toList());
         claims.put("roles", rolesList);
 
-        System.out.println("base="+signatureBase+", lifetime="+lifetime);
         Date issuedDate = new Date();
         return Jwts.builder()
                 .setClaims(claims)

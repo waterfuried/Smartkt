@@ -10,9 +10,8 @@ import java.time.*;
 import java.util.*;
 
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
-import ru.geekbrains.smartkt.dto.ProductDTO;
+import ru.geekbrains.smartkt.dto.StoredItemDTO;
 import ru.geekbrains.smartkt.exceptions.ResourceNotFoundException;
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
@@ -23,9 +22,8 @@ import static ru.geekbrains.smartkt.prefs.Prefs.*;
     список доступных для заказов ими товаров содержит все то их множество, которое имеется на складе;
     как товар на него попадает - вопрос за рамками концепции
 */
-@Slf4j
 @Entity
-@Table(name = "item_storage")
+@Table(name = "stored_items")
 @Data
 // создать конструкторы с 1 параметром для всех FINAL-полей и/или для помеченных аннотацией @NonNull
 @RequiredArgsConstructor
@@ -45,6 +43,8 @@ public class StoredItem {
     @Column(name = "title")
     private String title;
 
+    // стоимость (она же себестоимость) - общие денежные затраты, вложенные в товар (изготовление, реклама)
+    // цена - сумма за товар при продаже потребителю
     @Column(name = "cost")
     private Integer cost;
 
@@ -91,14 +91,17 @@ public class StoredItem {
         this.cost = cost;
     }
 
-    public StoredItem(ProductDTO product) {
+    public StoredItem(StoredItemDTO product) {
         id = product.getId();
         title = product.getTitle();
         cost = product.getCost();
+        amount = product.getAmount();
     }
 
     @Override
-    public String toString() { return "Item (id= "+id+", title='" +title+"', cost="+cost+")"; }
+    public String toString() {
+        return "StoredItem (id= "+id+", title='" +title+"', cost="+cost+"', amount="+amount+")";
+    }
 
     // добавление и удаление изображений товара
     public void addImage(ItemImage img) {
@@ -107,11 +110,8 @@ public class StoredItem {
     }
 
     public void delImage(Integer id) {
-        if (images == null || images.size() == 0 || id >= images.size() || images.get(id) == null)  {
-            String s = String.format(ERR_NOT_FOUND, "Изображение", "о");
-            log.error(s + ": id=" + id);
-            throw new ResourceNotFoundException(s);
-        }
+        if (images == null || images.size() == 0 || id >= images.size() || images.get(id) == null)
+            throw new ResourceNotFoundException(String.format(ERR_NOT_FOUND, "Изображение", "о"), "id="+id);
         images.remove((int)id);
     }
 

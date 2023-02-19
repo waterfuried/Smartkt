@@ -1,9 +1,5 @@
 package ru.geekbrains.smartkt.services;
 
-import ru.geekbrains.smartkt.dao.users.*;
-import ru.geekbrains.smartkt.dto.UserDTO;
-import ru.geekbrains.smartkt.repositories.*;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +10,11 @@ import java.util.*;
 import java.util.stream.*;
 
 import lombok.*;
+
+import ru.geekbrains.smartkt.dao.users.*;
+import ru.geekbrains.smartkt.dto.UserDTO;
+import ru.geekbrains.smartkt.repositories.*;
+import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +32,21 @@ public class CustomerService implements UserDetailsService {
 
     public void delete(Integer id) { repository.delete(id); }*/
 
-    public Optional<Customer> find(String name) { return repository.findByName(name); }
+    private Optional<Customer> findByName(String name) { return repository.findByName(name); }
+    private Optional<Customer> findById(Integer id) { return repository.findById(id); }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Customer c = find(name)
-                .orElseThrow(() -> new UsernameNotFoundException("User '"+name+"' not found"));
+        Customer c = findByName(name)
+                .orElseThrow(() -> new UsernameNotFoundException(ERR_USER_NOT_FOUND+": "+name));
         return new User(c.getName(), c.getPassword(), mapRolesToAuthorities(c.getRoles()));
+    }
+
+    public UserDTO loadUserById(Integer id) throws UsernameNotFoundException {
+        Customer c = findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(ERR_USER_NOT_FOUND+": id="+id));
+        return new UserDTO(c);
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
