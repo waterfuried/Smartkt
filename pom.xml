@@ -96,7 +96,7 @@
 		</dependency>
 		<!-- WSDL (Web Services Definition Language)
 			 used for creating objects and sending requests/getting responses
-			 via SOAP (Simple Objet Access Protocol) over HTTP -->
+			 via SOAP (Simple Object Access Protocol) over HTTP -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>

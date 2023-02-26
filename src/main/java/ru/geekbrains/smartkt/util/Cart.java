@@ -9,9 +9,8 @@ import java.util.*;
 
 import lombok.*;
 
-import ru.geekbrains.smartkt.dto.OrderedItemDTO;
-import ru.geekbrains.smartkt.dto.StoredItemDTO;
-import ru.geekbrains.smartkt.exceptions.ResourceNotFoundException;
+import ru.geekbrains.smartkt.dto.*;
+import ru.geekbrains.smartkt.exceptions.*;
 import ru.geekbrains.smartkt.services.ProductService;
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
 

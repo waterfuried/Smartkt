@@ -9,10 +9,8 @@ import java.util.*;
 
 import lombok.*;
 
-import ru.geekbrains.smartkt.dao.items.ItemDescription;
-import ru.geekbrains.smartkt.dao.items.ItemProvider;
-import ru.geekbrains.smartkt.dao.items.StoredItem;
-import ru.geekbrains.smartkt.exceptions.ValidationException;
+import ru.geekbrains.smartkt.dao.items.*;
+import ru.geekbrains.smartkt.exceptions.*;
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
 // контракт по виду товара на складе

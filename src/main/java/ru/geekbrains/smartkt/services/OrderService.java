@@ -11,8 +11,7 @@ import lombok.*;
 import ru.geekbrains.smartkt.dao.delivery.Delivery;
 import ru.geekbrains.smartkt.dao.orders.CustomOrder;
 import ru.geekbrains.smartkt.dao.users.Customer;
-import ru.geekbrains.smartkt.dto.CustomOrderDTO;
-import ru.geekbrains.smartkt.dto.OrderedItemDTO;
+import ru.geekbrains.smartkt.dto.*;
 import ru.geekbrains.smartkt.util.Cart;
 
 import ru.geekbrains.smartkt.repositories.OrderRepository;
