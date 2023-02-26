@@ -14,6 +14,10 @@ import lombok.*;
 @Entity
 @Table(name = "roles")
 @Data
+// конструктор по умолчанию (без аргументов) должен быть всегда -
+// если есть поля с аннотацией NonNull и используется аннотация RequiredArgsConstructor,
+// аннотацию NoArgsConstructor нужно тоже использовать
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Role {
     @Id

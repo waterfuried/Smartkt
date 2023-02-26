@@ -20,17 +20,23 @@ public class CartController {
     // для всех операций с корзиной рекомендуется использовать только GET-запросы,
     // в том случае, если передавать в его теле не нужно никакие объекты
     @GetMapping
-    public /*Page*/List<OrderedProductDTO> getAll(
+    public /*Page*/List<OrderedItemDTO> getAll(
             /*@RequestParam(name = "id") Integer id,
             @RequestParam(name = "title") String title,
             @RequestParam(name = "cost") Integer cost*/) {
-        return cart.getProducts();
+        return cart.getContent();
     }
 
     // добавление в корзину
-    // не соображу, как (в какой форме) передать добавленый в корзину товар сюда
-    @PostMapping
-    public void add(@RequestBody ProductDTO product) { cart.add(product); }
+    // всегда происходит из списка товаров на складе
+    @GetMapping("/add/{id}")
+    public void add(@PathVariable Integer id) { cart.add(id); }
+
+    // изменение кол-ва товара в корзине
+    @GetMapping("/change_amount")
+    public void changeAmount(@RequestParam Integer id, @RequestParam Integer delta) {
+        cart.changeAmount(id, delta);
+    }
 
     // удаление из корзины
     @GetMapping("/delete/{id}")

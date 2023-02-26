@@ -11,8 +11,10 @@ import org.hibernate.annotations.*;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.*;
+import ru.geekbrains.smartkt.dto.CustomOrderDTO;
 
 /*
     заказ (покупатель заказывает товары)
@@ -75,6 +77,16 @@ public class CustomOrder {
     // список товаров в заказе
     @OneToMany(mappedBy = "order")
     private List<OrderedItem> items;
+
+    public CustomOrder(CustomOrderDTO order) {
+        id = order.getId();
+        partNumber = order.getPartNumber();
+        status = new OrderStatus();
+        status.setStatus(order.getStatus());
+        customer = order.getCustomer();
+        delivery = order.getDelivery();
+        items = order.getItems().stream().map(OrderedItem::new).collect(Collectors.toList());
+    }
 
     @Override
     public String toString() {

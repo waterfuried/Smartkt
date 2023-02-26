@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS users (
 	email VARCHAR(255),
 	address varchar(255),
 	phone varchar(20),
+	-- default задает значение по умолчанию при добавлении новых записей
+	-- current_timestamp возвращает текущую временную метку
 	created_at timestamp default current_timestamp,
 	updated_at timestamp default current_timestamp
 );
@@ -76,8 +78,6 @@ CREATE TABLE IF NOT EXISTS stored_items (
 	part_number varchar(100),
 	provider_id int not null references item_providers (id),
 	desc_id int references item_descriptions (id),
-	-- default задает значение по умолчанию при добавлении новых записей
-	-- current_timestamp возвращает текущую временную метку
 	created_at timestamp default current_timestamp,
 	updated_at timestamp default current_timestamp
 );
@@ -149,10 +149,10 @@ create table if not exists ordered_items (
 );
 
 -- хранимые корзины
-create table if not exists carts (
-	id bigserial primary key,
-	order_id int not null references orders (id)
-);
+--create table if not exists carts (
+--	id bigserial primary key,
+--	order_id int not null references orders (id)
+--);
 
 
 --
@@ -186,6 +186,12 @@ INSERT INTO stored_items (title, cost, provider_id, amount) VALUES
 insert into order_statuses (status) values
     ('Принят'), ('Формируется'), ('Готов к выдаче'), ('Получен');
 
+insert into delivery_points (location) values
+    ('Основной пункт выдачи'), ('Резервный пункт выдачи');
+
+insert into delivery_lockers (location) values
+    ('Постамат1'), ('Постамат2'), ('Постамат3');
+
 insert into roles (designation) values
     ('ROLE_SUPER_ADMIN'), ('ROLE_ADMIN'),
     ('ROLE_MAJOR_MANAGER'), ('ROLE_MANAGER'),
@@ -197,8 +203,8 @@ INSERT INTO users (username, password, email) VALUES
 	('JustAdmin', '$2a$12$ZalCI46/hEaKLY2c9erk/O1xE.t20KUPIOJAN09lPM7UfrUI4m7mC', 'too_too@email.com'), -- PowerOverwhelming
 	('Manager1', '$2a$12$NM.QRaB6R5hPuDEEOI4SNOqX096xt.mb102myCIodE9CJzZwtZJ8i', 'manny@email.com'), -- manNY7Z1I3E0O
 	('Customer1', '$2a$12$FzbrC9w24jSNVW9q087sUenfPrYr6Au5CVuKZpghvU.LksNLdIo9S', 'mail1@email.com'), -- qwerasdmnbv
-	('Customer2', ' $2a$12$j8XV0hQ9JtR3Zo16wR9ItuL3Qe5596sd0AbpF8esDcsFucBH86geG', 'mail2@email.com'), -- qazwsxedcrfv
-	('Customer3', ' $2a$12$buaH2jzItOtA8Idu6Y5EC.dgH3Yw2lsJcngtp9S2u3T1QH2PagWHe', 'mail3@email.com'), -- 5463782910
+	('Customer2', '$2a$12$j8XV0hQ9JtR3Zo16wR9ItuL3Qe5596sd0AbpF8esDcsFucBH86geG', 'mail2@email.com'), -- qazwsxedcrfv
+	('Customer3', '$2a$12$buaH2jzItOtA8Idu6Y5EC.dgH3Yw2lsJcngtp9S2u3T1QH2PagWHe', 'mail3@email.com'), -- 5463782910
 	('Customer4', '$2a$12$S3xKNkbAtfACn4Wq2KD6Refdb74ZPLVrGeKokudpVVX7b8wfoL1e2', 'mail4@email.com'); -- 0293817465
 
 insert into ur_links (user_id, role_id) values

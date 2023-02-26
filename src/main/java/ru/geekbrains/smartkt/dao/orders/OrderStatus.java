@@ -4,11 +4,12 @@ import javax.persistence.*;
 
 import lombok.*;
 
-// состояние заказа: принят, формируется, готов к выдаче, получен
+import static ru.geekbrains.smartkt.prefs.Prefs.*;
+
+// состояние заказа: 1=принят, 2=формируется, 3=готов к выдаче, 4=получен
 @Entity
 @Table(name="order_statuses")
 @Data
-@RequiredArgsConstructor
 public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,5 +17,7 @@ public class OrderStatus {
     private Integer id;
 
     @Column(name = "status")
-    private String status;
+    private int status;
+
+    public OrderStatus() { status = ORDER_STATUS_REGISTERED; }
 }

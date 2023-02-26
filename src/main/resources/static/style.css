@@ -16,3 +16,15 @@
 .login_group {
     margin-left: 10px;
 }
+
+.menu {
+    /*display: flex;
+    justify-content: space-between;*/
+}
+
+.menu_lnk_dis {
+  pointer-events: none;
+  color: gray;
+}
+
+.hrz_btn_lst { display: inline; }

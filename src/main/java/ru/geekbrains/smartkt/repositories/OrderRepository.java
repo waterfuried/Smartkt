@@ -4,13 +4,16 @@ import ru.geekbrains.smartkt.dao.orders.CustomOrder;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-//import javax.annotation.PostConstruct;
 
-//import java.util.*;
+import java.util.*;
+
+//import javax.annotation.PostConstruct;
 //import java.util.stream.*;
 
 @Repository
 public /*class*/interface OrderRepository extends JpaRepository<CustomOrder, Integer> {
+    List<CustomOrder> findAllOrdersByCustomerId(Integer customerId);
+    void deleteById(Integer id);
 
     /*private List<CustomOrder> orders;
 

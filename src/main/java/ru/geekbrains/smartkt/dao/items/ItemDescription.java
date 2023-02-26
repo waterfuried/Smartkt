@@ -23,11 +23,11 @@ public class ItemDescription {
 
     // краткое
     @Column(name = "short_text")
-    private String descriptionShort;
+    private String briefText;
 
     // полное описание
     @Column(name = "full_text")
-    private String descriptionFull;
+    private String fullText;
 
     @CreationTimestamp
     @Column(name = "created_at")

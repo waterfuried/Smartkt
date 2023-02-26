@@ -51,7 +51,7 @@ public class ProductImpl implements Daocism<StoredItem> {
 
     @Override
     public StoredItem saveOrUpdate(StoredItem item) {
-        //            session.createQuery("update Item p set p.title :title where p.id = :id")
+        //            session.createQuery("update Product p set p.title :title where p.id = :id")
         //                    .setParameter("title", p.getTitle())
         //                    .setParameter("id", p.getId())
         //                    .executeUpdate();

@@ -18,6 +18,7 @@ import lombok.*;
 @Configuration
 // отключить стандартные настройки Spring Security и использовать прописанные здесь
 @EnableWebSecurity
+@EnableAspectJAutoProxy
 // активировать защиту на уровне методов - помечаются аннотациями @Secured/@PreAuthorized
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
@@ -75,6 +76,9 @@ public class Config extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    // Spring Security ВСЕГДА использует кодировщик паролей,
+    // для переопределения используемого по умолчанию - текст (строка) пароля в прямой форме -
+    // нужно создать определить как бин метод с именем passwordEncoder
     @Bean
     public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 

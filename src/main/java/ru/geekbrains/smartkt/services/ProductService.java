@@ -11,7 +11,7 @@ import java.util.stream.*;
 import lombok.*;
 
 import ru.geekbrains.smartkt.dao.items.StoredItem;
-import ru.geekbrains.smartkt.dto.ProductDTO;
+import ru.geekbrains.smartkt.dto.StoredItemDTO;
 import ru.geekbrains.smartkt.exceptions.ResourceNotFoundException;
 import ru.geekbrains.smartkt.repositories.ProductRepository;
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
@@ -28,17 +28,17 @@ public class ProductService {
     //private Pageable curPage;
 
     // если товар не найден, нужно возвращать не null, а исключение
-    public ProductDTO getOne(int id) {
+    public StoredItemDTO getOne(int id) {
         StoredItem p = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ERR_PRODUCT_NOT_FOUND +": id="+id));
-        return new ProductDTO(p);
+                .orElseThrow(() -> new ResourceNotFoundException(ERR_ITEM_NOT_FOUND +": id="+id, null));
+        return new StoredItemDTO(p);
     }
 
     // получить список всех товаров...
     // ...без разбиения по страницам
-    public List<ProductDTO> getAll() {
+    public List<StoredItemDTO> getAll() {
         return repository.findAll()
-                .stream().map(ProductDTO::new).collect(Collectors.toList());
+                .stream().map(StoredItemDTO::new).collect(Collectors.toList());
     }
 
     // ...с разбиением и учетом числа выводимых его элементов на страницу
@@ -61,9 +61,7 @@ public class ProductService {
 
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = DEFAULT_PAGE_SIZE;
-        Page<StoredItem> p = repository.findAll(spec, PageRequest.of(page - 1, pageSize));
-        //System.out.println(p.getTotalElements());
-        return p;
+        return repository.findAll(spec, PageRequest.of(page - 1, pageSize));
     }
 
     // перед добавлением нового товара товара в БД, его идентификатор сбрасывается,
@@ -72,24 +70,24 @@ public class ProductService {
     //  сохранение уникальности первичного ключа -- если удалить товар, затем снова добавить,
     //  id последнего добавленного будет на 1 больше последнего существующего (autoincrement),
     //  при каждой последующей паре удалений и добавлений обратно
-    public StoredItem/*ResponseEntity<?>*/ add(StoredItem item) {
+    public StoredItemDTO/*ResponseEntity<?>*/ add(StoredItemDTO item) {
         //repository./*add*/save(product);
         /*if (repository.productExists(product.getTitle()))
             return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(),
                     "Product '"+product.getTitle()+"' already exists"), HttpStatus.CONFLICT);*/
-        return repository.save(item);
+        return new StoredItemDTO(repository.save(new StoredItem(item)));
         //return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // после изменения полей объекта сущности при завершении транзакции он автоматически
     // будет сохранен в таблице БД, поэтому использовать аннотацию @Modifying нет нужды
     @Transactional
-    public StoredItem update(ProductDTO product) {
+    public StoredItemDTO update(StoredItemDTO product) {
         StoredItem p = repository.findById(product.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(ERR_CANNOT_UPDATE +", id="+product.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException(ERR_CANNOT_UPDATE +": id="+product.getId(), null));
         p.setCost(product.getCost());
         p.setTitle(product.getTitle());
-        return p;
+        return new StoredItemDTO(p);
     }
 
     public void deleteOne(Integer id) { repository./*delete*/deleteById(id); }

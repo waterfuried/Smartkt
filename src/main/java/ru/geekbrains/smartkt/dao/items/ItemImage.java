@@ -21,7 +21,7 @@ public class ItemImage {
     @Column(name = "id")
     private Integer id;
 
-    // связь с таблицей товаров на складе
+    // связь с таблицей товаров на складе: перекрестная, зачем?
     @ManyToOne
     @JoinColumn(name = "item_id")
     private StoredItem item;

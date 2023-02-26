@@ -8,8 +8,7 @@ import java.util.*;
 
 import lombok.*;
 
-import ru.geekbrains.smartkt.dao.items.StoredItem;
-import ru.geekbrains.smartkt.dto.ProductDTO;
+import ru.geekbrains.smartkt.dto.StoredItemDTO;
 import ru.geekbrains.smartkt.services.ProductService;
 import static ru.geekbrains.smartkt.prefs.Prefs.*;
 
@@ -25,7 +24,7 @@ public class ProductController {
     //public ProductController(ProductService service) { this.service = service; }
 
     /*
-        получение товара по id - отдельно отобразить товар с указанным id
+        получить товар по id - отдельно отобразить товар с указанным id
 
         поскольку запросы отсылаются по нажатию разных кнопок на форме,
         тип запроса определяется в коде соответсвующего обработчика на фронте,
@@ -46,27 +45,28 @@ public class ProductController {
         обновление и удаление данных - внутренние и определяются моделью данных (сущностями)
     */
     @GetMapping("/{id}")
-    public ProductDTO getProduct(@PathVariable Integer id) { return service.getOne(id); }
+    public StoredItemDTO getProduct(@PathVariable Integer id) { return service.getOne(id); }
 
-    // получение всех товаров единым списком
+    // все товары единым списком
     @GetMapping("/all")
-    public List<ProductDTO> getAllProducts() { return service.getAll(); }
+    public List<StoredItemDTO> getAllProducts() { return service.getAll(); }
 
-    // получение всех товаров с разбиением по страницам
+    // все товары с разбиением по страницам
     @GetMapping
-    public Page<ProductDTO> getProducts(
-            @RequestParam(name = "page", defaultValue = "1") Integer page,
-            @RequestParam(name = "page_size", defaultValue = DEFAULT_PAGE_SIZE+"") Integer pageSize,
+    public Page<StoredItemDTO> getProducts(
+            @RequestParam(name = "p", defaultValue = "1") Integer page,
+            @RequestParam(name = "psz", defaultValue = DEFAULT_PAGE_SIZE+"") Integer pageSize,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "min_cost", required = false) Integer minCost,
             @RequestParam(name = "max_cost", required = false) Integer maxCost)
     {
+        System.out.println(page+" "+pageSize+" "+title);
         return service.getSome(page < 1 ? 1 : page, pageSize, title, minCost, maxCost)
-                .map(ProductDTO::new);
+                .map(StoredItemDTO::new);
     }
 
     /*
-        создание нового товара
+        создать новый товар
         Создать страницу со списком товаров, на которой можно добавлять позиции
         и редактировать существующие.
         На эту страницу должны иметь доступ админы и менеджеры.
@@ -79,24 +79,25 @@ public class ProductController {
     */
     @PostMapping//("/")
     @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
-    public ProductDTO addProduct(@RequestBody ProductDTO product) {
+    public StoredItemDTO addProduct(@RequestBody StoredItemDTO product) {
         product.setId(null); // если был передан уже существующий товар, сбросить его идентификатор
         // если какие-то данные пользователем не введены или введены некорректно,
         // выбросить исключение ValidationException
         product.validate();
-        return new ProductDTO(service.add(new StoredItem(product)));
+        return service.add(product);
     }
 
-    // удаление товара по id
+    // удалить
     @DeleteMapping("/{id}")//("/products/delete/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
     public void delProduct(@PathVariable Integer id) {
         service.deleteOne(id);
     }
 
+    // изменить
     @PutMapping
     @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_MANAGER", "ROLE_MAJOR_MANAGER"})
-    public void updateProduct(@RequestBody ProductDTO product) {
+    public void updateProduct(@RequestBody StoredItemDTO product) {
         service.update(product);
     }
 }

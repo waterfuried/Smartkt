@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="UTF-8">
+        <title>Оформить заказ</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="icon" href="data:,">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="script/order.js"></script>
+    </head>
+    <body ng-controller="orderController">
+        <p><b>Заказанные товары</b></p>
+        <table class="table table-hover">
+            <tr>
+                <td><b>Артикул</b></td>
+                <td><b>Название</b></td>
+                <td><b>Цена</b></td>
+                <td><b>Кол-во</b></td>
+                <td><b>Производитель/Поставщик</b></td>
+                <td><b>Описание</b></td>
+                <td></td> <!-- колонка с изображением товара -->
+            </tr>
+            <!--<tbody>
+                <tr ng-repeat="s in cartContent">
+                    <td>{{s.id}}</td>
+                    <td>{{s.title}}</td>
+                    <td>{{s.cost}}</td>
+                    <td>{{s.amount}}</td>
+                    <td>{{s.provider.title}}</td>
+                    <td>{{s.description.briefText}}</td>
+                    </td>
+                </tr>
+            </tbody>-->
+        </table>
+        <div class="container">
+            <div>
+                <label for="deliveryType">Способ получения</label>
+                <select id="deliveryType" (change)="dropdownSelect()">
+                    <option>-- Не выбран --</option>
+                    <option>Самовывоз из пункта выдачи заказов</option>
+                    <option>Забрать из постамата</option>
+                    <option>Доставить курьером</option>
+                </select>
+            </div>
+            <div ng-show="isPoint()">
+                <label for="deliveryPoint">Адрес пункта выдачи</label>
+                <select id="deliveryPoint"></select>
+            </div>
+            <div ng-show="isLocker()">
+                <label for="deliveryLocker">Адрес постамата</label>
+                <select id="deliveryLocker"></select>
+            </div>
+            <div ng-show="isUser()">
+                <label for="deliveryToCustomer">Адрес доставки</label>
+                <input type="text" class="form-control" id="deliveryToCustomer">
+            </div>
+        </div>
+        <p>Стоимость заказа:</p>
+        <p>Заказ можно забрать в течение</p>
+        <div>
+            <button ng-click="registerOrder()">Оформить</button>
+            <button ng-click="toMain()">Вернуться в корзину</button>
+        </div>
+    </body>
+</html>

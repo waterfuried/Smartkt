@@ -1,4 +1,4 @@
-<!-- 10.2. Создать страницу со списком всех пользователей, к которой имеют доступ только админы. -->
+<!-- 1.11.2. Создать страницу со списком всех пользователей, к которой имеют доступ только админы. -->
 <!DOCTYPE html>
 <html ng-app="app">
     <head>
@@ -15,7 +15,32 @@
         <script src="script/session.js"></script>
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" ng-controller="sessionController">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item" ng-show="!isUserLoggedIn()">
+                        <form class="align-middle" ng-submit="tryToAuth()">
+                            <div class="input-group input-group-sm">
+                                <label>Логин</label>
+                                <input class="login_group form-control" id="username" ng-model="user.username" type="text">
+                                <label style="padding-left: 15px;">Пароль</label>
+                                <input class="login_group form-control" id="userpass" ng-model="user.password" type="password">
+                                <button class="login_group btn btn-outline-warning btn-sm" type="submit">Log in</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Log out</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--
+        <div ng-controller="sessionController" ng-show="!isUserLoggedIn()">
+            <h3>Users</h3>
+        </div>
         <div ng-controller="sessionController" ng-show="isUserLoggedIn()">
+            <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выход</button>
             <h3>Пользователи</h3>
             <table class="table table-hover">
                 <thead>
@@ -26,7 +51,7 @@
                     <td></td>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="u in usersList"><!--usersPage.content-->
+                    <tr ng-repeat="u in usersList">!--usersPage.content--
                         <td>{{u.id}}</td>
                         <td>{{u.name}}</td>
                         <td>{{u.email}}</td>
@@ -36,7 +61,7 @@
                 </tbody>
             </table>
             <div>
-                <!-- добавление пользователя -->
+                !-- добавление пользователя --
                 <form novalidate ng-submit="addUser()">
                     <p><b>Новый пользователь</b></p>
                     <div>
@@ -56,5 +81,6 @@
                 </form>
             </div>
         </div>
+        -->
     </body>
 </html>
